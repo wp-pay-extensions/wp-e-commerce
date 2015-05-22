@@ -8,7 +8,7 @@
  * @author Remco Tolsma
  * @version 1.0
  */
-class Pronamic_WPeCommerce_IDeal_IDealMerchant extends wpsc_merchant {
+class Pronamic_WP_Pay_Extensions_WPeCommerce_IDealMerchant extends wpsc_merchant {
 	/**
 	 * Construct and initialize an Pronamic iDEAL merchant class
 	 */
@@ -32,17 +32,17 @@ class Pronamic_WPeCommerce_IDeal_IDealMerchant extends wpsc_merchant {
 	 * Submit to gateway
 	 */
 	public function submit() {
-		$config_id = get_option( Pronamic_WPeCommerce_IDeal_AddOn::OPTION_CONFIG_ID );
+		$config_id = get_option( Pronamic_WP_Pay_Extensions_WPeCommerce_Extension::OPTION_CONFIG_ID );
 
 		// Set process to 'order_received' (2)
 		// @see http://plugins.trac.wordpress.org/browser/wp-e-commerce/tags/3.8.7.6.2/wpsc-includes/merchant.class.php#L301
 		// @see http://plugins.trac.wordpress.org/browser/wp-e-commerce/tags/3.8.7.6.2/wpsc-core/wpsc-functions.php#L115
-		$this->set_purchase_processed_by_purchid( Pronamic_WPeCommerce_WPeCommerce::PURCHASE_STATUS_ORDER_RECEIVED );
+		$this->set_purchase_processed_by_purchid( Pronamic_WP_Pay_Extensions_WPeCommerce_WPeCommerce::PURCHASE_STATUS_ORDER_RECEIVED );
 
 		$gateway = Pronamic_WP_Pay_Plugin::get_gateway( $config_id );
 
 		if ( $gateway ) {
-			$data = new Pronamic_WP_Pay_WPeCommerce_PaymentData( $this );
+			$data = new Pronamic_WP_Pay_Extensions_WPeCommerce_PaymentData( $this );
 
 			$payment = Pronamic_WP_Pay_Plugin::start( $config_id, $gateway, $data );
 
@@ -73,7 +73,7 @@ class Pronamic_WPeCommerce_IDeal_IDealMerchant extends wpsc_merchant {
 		$html .= '	</td>';
 		$html .= '	<td>';
 		$html .= Pronamic_WP_Pay_Admin::dropdown_configs( array(
-			'name' => Pronamic_WPeCommerce_IDeal_AddOn::OPTION_CONFIG_ID,
+			'name' => Pronamic_WP_Pay_Extensions_WPeCommerce_Extension::OPTION_CONFIG_ID,
 			'echo' => false,
 		) );
 		$html .= '	</td>';
@@ -86,7 +86,7 @@ class Pronamic_WPeCommerce_IDeal_IDealMerchant extends wpsc_merchant {
 	 * Admin config submit
 	 */
 	public static function admin_config_submit() {
-		$name = Pronamic_WPeCommerce_IDeal_AddOn::OPTION_CONFIG_ID;
+		$name = Pronamic_WP_Pay_Extensions_WPeCommerce_Extension::OPTION_CONFIG_ID;
 
 		if ( filter_has_var( INPUT_POST, $name ) ) {
 			$config_id = filter_input( INPUT_POST, $name, FILTER_SANITIZE_STRING );

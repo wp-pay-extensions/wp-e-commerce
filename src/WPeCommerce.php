@@ -8,7 +8,7 @@
  * @author Remco Tolsma
  * @version 1.0
  */
-class Pronamic_WPeCommerce_WPeCommerce {
+class Pronamic_WP_Pay_Extensions_WPeCommerce_WPeCommerce {
 	/**
 	 * Purche status
 	 *

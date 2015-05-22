@@ -8,7 +8,7 @@
  * @author Remco Tolsma
  * @version 1.0
  */
-class Pronamic_WPeCommerce_IDeal_AddOn {
+class Pronamic_WP_Pay_Extensions_WPeCommerce_Extension {
 	/**
 	 * Slug
 	 *
@@ -55,7 +55,7 @@ class Pronamic_WPeCommerce_IDeal_AddOn {
 			'name'                   => __( 'Pronamic iDEAL', 'pronamic_ideal' ),
 			'api_version'            => 2.0,
 			'image'                  => plugins_url( '/images/icon-32x32.png', Pronamic_WP_Pay_Plugin::$file ),
-			'class_name'             => 'Pronamic_WPeCommerce_IDeal_IDealMerchant',
+			'class_name'             => 'Pronamic_WP_Pay_Extensions_WPeCommerce_IDealMerchant',
 			'has_recurring_billing'  => false,
 			'wp_admin_cannot_cancel' => false,
 			'display_name'           => __( 'iDEAL', 'pronamic_ideal' ),
@@ -101,15 +101,15 @@ class Pronamic_WPeCommerce_IDeal_AddOn {
 	 * @param Pronamic_Pay_Payment $payment
 	 */
 	public static function status_update( Pronamic_Pay_Payment $payment, $can_redirect = false ) {
-		$merchant = new Pronamic_WPeCommerce_IDeal_IDealMerchant( $payment->get_source_id() );
-		$data = new Pronamic_WP_Pay_WPeCommerce_PaymentData( $merchant );
+		$merchant = new Pronamic_WP_Pay_Extensions_WPeCommerce_IDealMerchant( $payment->get_source_id() );
+		$data = new Pronamic_WP_Pay_Extensions_WPeCommerce_PaymentData( $merchant );
 
 		$url = $data->get_normal_return_url();
 
 		switch ( $payment->status ) {
 			case Pronamic_WP_Pay_Statuses::CANCELLED:
-				$merchant->set_purchase_processed_by_purchid( Pronamic_WPeCommerce_WPeCommerce::PURCHASE_STATUS_INCOMPLETE_SALE );
-				// $merchant->set_transaction_details( $payment->transaction->getId(), Pronamic_WPeCommerce_WPeCommerce::PURCHASE_STATUS_INCOMPLETE_SALE );
+				$merchant->set_purchase_processed_by_purchid( Pronamic_WP_Pay_Extensions_WPeCommerce_WPeCommerce::PURCHASE_STATUS_INCOMPLETE_SALE );
+				// $merchant->set_transaction_details( $payment->transaction->getId(), Pronamic_WP_Pay_Extensions_WPeCommerce_WPeCommerce::PURCHASE_STATUS_INCOMPLETE_SALE );
 
 				$url = $data->get_cancel_url();
 
@@ -130,7 +130,7 @@ class Pronamic_WPeCommerce_IDeal_AddOn {
 
 				transaction_results( $session_id );
 
-				$merchant->set_purchase_processed_by_purchid( Pronamic_WPeCommerce_WPeCommerce::PURCHASE_STATUS_ACCEPTED_PAYMENT );
+				$merchant->set_purchase_processed_by_purchid( Pronamic_WP_Pay_Extensions_WPeCommerce_WPeCommerce::PURCHASE_STATUS_ACCEPTED_PAYMENT );
 
 				$url = $data->get_success_url();
 
