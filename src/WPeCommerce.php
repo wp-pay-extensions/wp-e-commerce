@@ -3,10 +3,10 @@
 /**
  * Title: WP e-Commerce
  * Description:
- * Copyright: Copyright (c) 2005 - 2011
+ * Copyright: Copyright (c) 2005 - 2015
  * Company: Pronamic
  * @author Remco Tolsma
- * @version 1.0
+ * @version 1.0.0w
  */
 class Pronamic_WP_Pay_Extensions_WPeCommerce_WPeCommerce {
 	/**
