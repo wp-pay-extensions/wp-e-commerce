@@ -6,7 +6,7 @@
  * Copyright: Copyright (c) 2005 - 2015
  * Company: Pronamic
  * @author Remco Tolsma
- * @version 1.0.0w
+ * @version 1.0.0
  */
 class Pronamic_WP_Pay_Extensions_WPeCommerce_WPeCommerce {
 	/**
@@ -56,8 +56,6 @@ class Pronamic_WP_Pay_Extensions_WPeCommerce_WPeCommerce {
 	 * @var int
 	 */
 	const PURCHASE_STATUS_DECLINED_PAYMENT = 6;
-
-	//////////////////////////////////////////////////
 
 	/**
 	 * Check if WP e-Comerce is active (Automattic/developer style)
