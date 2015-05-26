@@ -6,7 +6,11 @@ module.exports = function( grunt ) {
 
 		// JSHint
 		jshint: {
-			all: [ 'Gruntfile.js', 'composer.json', 'package.json' ]
+			all: [
+				'Gruntfile.js',
+				'composer.json',
+				'package.json'
+			]
 		},
 
 		// PHP Code Sniffer

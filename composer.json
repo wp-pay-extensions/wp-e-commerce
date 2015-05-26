@@ -24,7 +24,8 @@
 		"source": "https://github.com/wp-pay-extensions/wp-e-commerce"
 	},
 	"autoload": {
-		"classmap": ["src/"]
+		"classmap": ["src/"],
+		"files": ["src/functions.php"]
 	},
 	"repositories":[
 		{
