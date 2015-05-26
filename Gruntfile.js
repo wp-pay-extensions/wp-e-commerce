@@ -54,31 +54,12 @@ module.exports = function( grunt ) {
 		phpunit: {
 			application: {},
 		},
-
-		// Shell
-		shell: {
-			options: {
-				stdout: true,
-				stderr: true
-			},
-			initWp: {
-				command: [
-					'mkdir /Users/remco/Websites/wp-e-commerce.dev',
-					'cd /Users/remco/Websites/wp-e-commerce.dev',
-					'wp core download --path=/Users/remco/Websites/wp-e-commerce.dev --locale=nl_NL',
-					'wp core config --dbname=.dev_wp --dbuser=root --dbpass=test1234 --locale=nl_NL',
-					'wp db create',
-					'wp core install --url=http://wp-e-commerce.dev/ --title=wp-e-commerce.dev --admin_user=remcotolsma --admin_password=remcotolsma --admin_email=info@remcotolsma.nl',
-				].join( '&&' )
-			}
-		},
 	} );
 
 	grunt.loadNpmTasks( 'grunt-contrib-jshint' );
 	grunt.loadNpmTasks( 'grunt-phpcs' );
 	grunt.loadNpmTasks( 'grunt-phplint' );
 	grunt.loadNpmTasks( 'grunt-phpmd' );
-	grunt.loadNpmTasks( 'grunt-shell' );
 
 	// Default task(s).
 	grunt.registerTask( 'default', [ 'jshint', 'phplint', 'phpmd', 'phpcs' ] );
