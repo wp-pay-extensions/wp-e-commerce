@@ -2,6 +2,12 @@
 
 **WP eCommerce driver for the WordPress payment processing library.**
 
+[![Latest Stable Version](https://poser.pugx.org/wp-pay-extensions/wp-e-commerce/v/stable)](https://packagist.org/packages/wp-pay-extensions/wp-e-commerce)
+[![Total Downloads](https://poser.pugx.org/wp-pay-extensions/wp-e-commerce/downloads)](https://packagist.org/packages/wp-pay-extensions/wp-e-commerce)
+[![Latest Unstable Version](https://poser.pugx.org/wp-pay-extensions/wp-e-commerce/v/unstable)](https://packagist.org/packages/wp-pay-extensions/wp-e-commerce)
+[![License](https://poser.pugx.org/wp-pay-extensions/wp-e-commerce/license)](https://packagist.org/packages/wp-pay-extensions/wp-e-commerce)
+[![Built with Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/)
+
 ## Links
 
 *	[WP eCommerce](https://wpecommerce.org/)
