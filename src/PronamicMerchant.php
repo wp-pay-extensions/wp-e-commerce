@@ -1,21 +1,21 @@
 <?php
 
 /**
- * Title: WP e-Commerce iDEAL merchant
+ * Title: WP e-Commerce Pronamic merchant
  * Description:
  * Copyright: Copyright (c) 2005 - 2015
  * Company: Pronamic
  * @author Remco Tolsma
- * @version 1.0.0
+ * @version 1.1.0
  */
-class Pronamic_WP_Pay_Extensions_WPeCommerce_IDealMerchant extends wpsc_merchant {
+class Pronamic_WP_Pay_Extensions_WPeCommerce_PronamicMerchant extends wpsc_merchant {
 	/**
-	 * Construct and initialize an Pronamic iDEAL merchant class
+	 * Construct and initialize an Pronamic merchant class
 	 */
 	public function __construct( $purchase_id = null, $is_receiving = false ) {
 		parent::__construct( $purchase_id, $is_receiving );
 
-		$this->name = __( 'Pronamic iDEAL', 'pronamic_ideal' );
+		$this->name = __( 'Pronamic', 'pronamic_ideal' );
 	}
 
 	//////////////////////////////////////////////////
@@ -32,7 +32,7 @@ class Pronamic_WP_Pay_Extensions_WPeCommerce_IDealMerchant extends wpsc_merchant
 	 * Submit to gateway
 	 */
 	public function submit() {
-		$config_id = get_option( Pronamic_WP_Pay_Extensions_WPeCommerce_Extension::OPTION_IDEAL_CONFIG_ID  );
+		$config_id = get_option( Pronamic_WP_Pay_Extensions_WPeCommerce_Extension::OPTION_PRONAMIC_CONFIG_ID );
 
 		// Set process to 'order_received' (2)
 		// @see http://plugins.trac.wordpress.org/browser/wp-e-commerce/tags/3.8.7.6.2/wpsc-includes/merchant.class.php#L301
@@ -44,7 +44,7 @@ class Pronamic_WP_Pay_Extensions_WPeCommerce_IDealMerchant extends wpsc_merchant
 		if ( $gateway ) {
 			$data = new Pronamic_WP_Pay_Extensions_WPeCommerce_PaymentData( $this );
 
-			$payment_method = Pronamic_WP_Pay_PaymentMethods::IDEAL;
+			$payment_method = get_option( Pronamic_WP_Pay_Extensions_WPeCommerce_Extension::OPTION_PRONAMIC_PAYMENT_METHOD );
 
 			$gateway->set_payment_method( $payment_method );
 
@@ -77,11 +77,42 @@ class Pronamic_WP_Pay_Extensions_WPeCommerce_IDealMerchant extends wpsc_merchant
 		$html .= '	</td>';
 		$html .= '	<td>';
 		$html .= Pronamic_WP_Pay_Admin::dropdown_configs( array(
-			'name' => Pronamic_WP_Pay_Extensions_WPeCommerce_Extension::OPTION_IDEAL_CONFIG_ID ,
+			'name' => Pronamic_WP_Pay_Extensions_WPeCommerce_Extension::OPTION_PRONAMIC_CONFIG_ID,
 			'echo' => false,
 		) );
 		$html .= '	</td>';
 		$html .= '</tr>';
+
+		$config_id = get_option( Pronamic_WP_Pay_Extensions_WPeCommerce_Extension::OPTION_PRONAMIC_CONFIG_ID );
+
+		$gateway = Pronamic_WP_Pay_Plugin::get_gateway( $config_id );
+
+		if ( $gateway ) {
+			$payment_method_field = $gateway->get_payment_method_field();
+
+			if ( $payment_method_field ) {
+				$choices = $payment_method_field['choices'];
+
+				$name = Pronamic_WP_Pay_Extensions_WPeCommerce_Extension::OPTION_PRONAMIC_PAYMENT_METHOD;
+
+				$payment_method = get_option( $name );
+
+				$options = Pronamic_WP_HTML_Helper::select_options_grouped( $choices, $payment_method );
+				// Double quotes are not working, se we replace them with an single quote
+				$options = str_replace( '"', '\'', $options );
+
+				$html .= '<tr>';
+				$html .= '	<td class="wpsc_CC_details">';
+				$html .= '		' . __( 'Payment Method', 'pronamic_ideal' );
+				$html .= '	</td>';
+				$html .= '	<td>';
+				$html .= sprintf( "<select name='%s' id='%s'>", $name, $name );
+				$html .= sprintf( '%s', $options );
+				$html .= sprintf( '</select>' );
+				$html .= '	</td>';
+				$html .= '</tr>';
+			}
+		}
 
 		return $html;
 	}
@@ -90,12 +121,22 @@ class Pronamic_WP_Pay_Extensions_WPeCommerce_IDealMerchant extends wpsc_merchant
 	 * Admin config submit
 	 */
 	public static function admin_config_submit() {
-		$name = Pronamic_WP_Pay_Extensions_WPeCommerce_Extension::OPTION_IDEAL_CONFIG_ID ;
+		// Config ID
+		$name = Pronamic_WP_Pay_Extensions_WPeCommerce_Extension::OPTION_PRONAMIC_CONFIG_ID;
 
 		if ( filter_has_var( INPUT_POST, $name ) ) {
 			$config_id = filter_input( INPUT_POST, $name, FILTER_SANITIZE_STRING );
 
 			update_option( $name, $config_id );
+		}
+
+		// Payment method
+		$name = Pronamic_WP_Pay_Extensions_WPeCommerce_Extension::OPTION_PRONAMIC_PAYMENT_METHOD;
+
+		if ( filter_has_var( INPUT_POST, $name ) ) {
+			$payment_method = filter_input( INPUT_POST, $name, FILTER_SANITIZE_STRING );
+
+			update_option( $name, $payment_method );
 		}
 
 		return true;
@@ -111,12 +152,14 @@ class Pronamic_WP_Pay_Extensions_WPeCommerce_IDealMerchant extends wpsc_merchant
 	public static function advanced_inputs() {
 		$output = '';
 
-		$config_id = get_option( Pronamic_WP_Pay_Extensions_WPeCommerce_Extension::OPTION_IDEAL_CONFIG_ID );
+		$config_id = get_option( Pronamic_WP_Pay_Extensions_WPeCommerce_Extension::OPTION_PRONAMIC_CONFIG_ID );
 
 		$gateway = Pronamic_WP_Pay_Plugin::get_gateway( $config_id );
 
 		if ( $gateway ) {
-			$gateway->set_payment_method( Pronamic_WP_Pay_PaymentMethods::IDEAL );
+			$payment_method = get_option( Pronamic_WP_Pay_Extensions_WPeCommerce_Extension::OPTION_PRONAMIC_PAYMENT_METHOD );
+
+			$gateway->set_payment_method( $payment_method );
 
 			$output = $gateway->get_input_html();
 		}

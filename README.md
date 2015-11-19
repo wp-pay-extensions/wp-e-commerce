@@ -20,3 +20,4 @@
 *	Pronamic_WPeCommerce_WPeCommerce » Pronamic_WP_Pay_Extensions_WPeCommerce_WPeCommerce
 *	Pronamic_WPeCommerce_IDeal_AddOn » Pronamic_WP_Pay_Extensions_WPeCommerce_Extension
 *	Pronamic_WPeCommerce_IDeal_IDealMerchant » Pronamic_WP_Pay_Extensions_WPeCommerce_IDealMerchant
+*	Pronamic_WPeCommerce_IDeal_PronamicMerchant » Pronamic_WP_Pay_Extensions_WPeCommerce_PronamicMerchant

@@ -6,6 +6,8 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 
 ## [Unreleased][unreleased]
 - Removed status code from redirect in status_update.
+- Added Pronamic gateway, whith payment method selector in plugin settings.
+- iDEAL gateway now uses the iDEAL payment method.
 
 ## 1.0.0 - 2015-05-26
 
