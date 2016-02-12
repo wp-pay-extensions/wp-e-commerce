@@ -7,6 +7,9 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## [Unreleased][unreleased]
 -
 
+## [1.0.2] - 2016-02-12
+- Use WordPress pay core library version ^1.3.3.
+
 ## [1.0.1] - 2016-02-12
 - WordPress Coding Standards optimizations.
 - Removed status code from redirect in status_update.
@@ -18,5 +21,6 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ### Added
 - First release.
 
-[unreleased]: https://github.com/wp-pay-extensions/wp-e-commerce/compare/1.0.1...HEAD
+[unreleased]: https://github.com/wp-pay-extensions/wp-e-commerce/compare/1.0.2...HEAD
+[1.0.2]: https://github.com/wp-pay-extensions/wp-e-commerce/compare/1.0.1...1.0.2
 [1.0.1]: https://github.com/wp-pay-extensions/wp-e-commerce/compare/1.0.0...1.0.1
