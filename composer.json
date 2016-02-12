@@ -36,7 +36,7 @@
 	"require": {
 		"php": ">=5.2.4",
 		"wpackagist-plugin/wp-e-commerce": "3.9.3",
-		"wp-pay/core": ">=1.0.1"
+		"wp-pay/core": "dev-develop"
 	},
 	"require-dev": {
 		"satooshi/php-coveralls": "dev-master"

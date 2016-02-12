@@ -3,10 +3,12 @@
 /**
  * Title: WP eCommerce extension
  * Description:
- * Copyright: Copyright (c) 2005 - 2015
+ * Copyright: Copyright (c) 2005 - 2016
  * Company: Pronamic
+ *
  * @author Remco Tolsma
  * @version 1.0.0
+ * @since 1.0.0
  */
 class Pronamic_WP_Pay_Extensions_WPeCommerce_Extension {
 	/**
@@ -21,14 +23,28 @@ class Pronamic_WP_Pay_Extensions_WPeCommerce_Extension {
 	 *
 	 * @var string
 	 */
-	const OPTION_CONFIG_ID = 'pronamic_pay_ideal_wpsc_config_id';
+	const OPTION_IDEAL_CONFIG_ID = 'pronamic_pay_ideal_wpsc_config_id';
+
+	/**
+	 * Option for config ID
+	 *
+	 * @var string
+	 */
+	const OPTION_PRONAMIC_CONFIG_ID = 'pronamic_pay_pronamic_wpsc_config_id';
+
+	/**
+	 * Option for payment method
+	 *
+	 * @var string
+	 */
+	const OPTION_PRONAMIC_PAYMENT_METHOD = 'pronamic_pay_pronamic_wpsc_payment_method';
 
 	//////////////////////////////////////////////////
 
 	/**
 	 * Bootstrap
 	 */
-	public static function bootstrap(){
+	public static function bootstrap() {
 		// Add gateway to gateways
 		add_filter( 'wpsc_merchants_modules',               array( __CLASS__, 'merchants_modules' ) );
 
@@ -52,6 +68,23 @@ class Pronamic_WP_Pay_Extensions_WPeCommerce_Extension {
 		global $nzshpcrt_gateways, $num, $wpsc_gateways, $gateway_checkout_form_fields;
 
 		$gateways[] = array(
+			'name'                   => __( 'Pronamic', 'pronamic_ideal' ),
+			'api_version'            => 2.0,
+			'class_name'             => 'Pronamic_WP_Pay_Extensions_WPeCommerce_PronamicMerchant',
+			'has_recurring_billing'  => false,
+			'wp_admin_cannot_cancel' => false,
+			'display_name'           => __( 'Pronamic', 'pronamic_ideal' ),
+			'requirements'           => array(
+				'php_version'   => 5.0,
+				'extra_modules' => array(),
+			),
+			'form'                   => 'pronamic_ideal_wpsc_pronamic_merchant_form',
+			'submit_function'        => 'pronamic_ideal_wpsc_pronamic_merchant_submit_function',
+			// this may be legacy, not yet decided
+			'internalname'           => 'wpsc_merchant_pronamic',
+		);
+
+		$gateways[] = array(
 			'name'                   => __( 'Pronamic iDEAL', 'pronamic_ideal' ),
 			'api_version'            => 2.0,
 			'image'                  => plugins_url( '/images/icon-32x32.png', Pronamic_WP_Pay_Plugin::$file ),
@@ -62,35 +95,17 @@ class Pronamic_WP_Pay_Extensions_WPeCommerce_Extension {
 			'requirements'           => array(
 				'php_version'   => 5.0,
 				'extra_modules' => array(),
-			) ,
-			'form'                   => 'pronamic_ideal_wpsc_merchant_form',
-			'submit_function'        => 'pronamic_ideal_wpsc_merchant_submit_function',
+			),
+			'form'                   => 'pronamic_ideal_wpsc_ideal_merchant_form',
+			'submit_function'        => 'pronamic_ideal_wpsc_ideal_merchant_submit_function',
 			// this may be legacy, not yet decided
 			'internalname'           => 'wpsc_merchant_pronamic_ideal',
 		);
 
-		$gateway_checkout_form_fields['wpsc_merchant_pronamic_ideal'] = self::advanced_inputs();
+		$gateway_checkout_form_fields['wpsc_merchant_pronamic']       = Pronamic_WP_Pay_Extensions_WPeCommerce_PronamicMerchant::advanced_inputs();
+		$gateway_checkout_form_fields['wpsc_merchant_pronamic_ideal'] = Pronamic_WP_Pay_Extensions_WPeCommerce_IDealMerchant::advanced_inputs();
 
 		return $gateways;
-	}
-
-	/**
-	 * Advanced inputs
-	 *
-	 * @return string
-	 */
-	private static function advanced_inputs() {
-		$output = '';
-
-		$config_id = get_option( self::OPTION_CONFIG_ID );
-
-		$gateway = Pronamic_WP_Pay_Plugin::get_gateway( $config_id );
-
-		if ( $gateway ) {
-			$output = $gateway->get_input_html();
-		}
-
-		return $output;
 	}
 
 	//////////////////////////////////////////////////
@@ -144,7 +159,7 @@ class Pronamic_WP_Pay_Extensions_WPeCommerce_Extension {
 		}
 
 		if ( $can_redirect ) {
-			wp_redirect( $url, 303 );
+			wp_redirect( $url );
 
 			exit;
 		}
@@ -164,7 +179,7 @@ class Pronamic_WP_Pay_Extensions_WPeCommerce_Extension {
 			'<a href="%s">%s</a>',
 			add_query_arg( array(
 				'page'           => 'wpsc-sales-logs',
-				'purchaselog_id' => $payment->get_source_id()
+				'purchaselog_id' => $payment->get_source_id(),
 			), admin_url( 'index.php' ) ),
 			sprintf( __( 'Purchase #%s', 'pronamic_ideal' ), $payment->get_source_id() )
 		);
