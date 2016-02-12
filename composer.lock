@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "056235270872ed1cd618f91a1a4395af",
-    "content-hash": "8c30f6f521451b38ee616a2f6737bad0",
+    "hash": "f856a1c30109fd91e92f81367a3c8eef",
+    "content-hash": "c40fb25020b5c37708f2c98994e779a7",
     "packages": [
         {
             "name": "composer/installers",
@@ -107,16 +107,16 @@
         },
         {
             "name": "wp-pay/core",
-            "version": "dev-develop",
+            "version": "1.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wp-pay/core.git",
-                "reference": "53735880157a56618dc2621436a3f3232117163e"
+                "reference": "e93976ac91b7a9d4cd35e83aee18d1f3a3fc35c5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wp-pay/core/zipball/53735880157a56618dc2621436a3f3232117163e",
-                "reference": "53735880157a56618dc2621436a3f3232117163e",
+                "url": "https://api.github.com/repos/wp-pay/core/zipball/e93976ac91b7a9d4cd35e83aee18d1f3a3fc35c5",
+                "reference": "e93976ac91b7a9d4cd35e83aee18d1f3a3fc35c5",
                 "shasum": ""
             },
             "require": {
@@ -164,7 +164,7 @@
                 "wordpress",
                 "wp"
             ],
-            "time": "2016-02-04 08:13:57"
+            "time": "2016-02-04 08:14:21"
         },
         {
             "name": "wpackagist-plugin/wp-e-commerce",
@@ -861,7 +861,6 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "wp-pay/core": 20,
         "satooshi/php-coveralls": 20
     },
     "prefer-stable": false,
