@@ -5,8 +5,10 @@
  * Description:
  * Copyright: Copyright (c) 2005 - 2016
  * Company: Pronamic
+ *
  * @author Remco Tolsma
  * @version 1.0.0
+ * @since 1.0.0
  */
 class Pronamic_WP_Pay_Extensions_WPeCommerce_Extension {
 	/**
@@ -42,7 +44,7 @@ class Pronamic_WP_Pay_Extensions_WPeCommerce_Extension {
 	/**
 	 * Bootstrap
 	 */
-	public static function bootstrap(){
+	public static function bootstrap() {
 		// Add gateway to gateways
 		add_filter( 'wpsc_merchants_modules',               array( __CLASS__, 'merchants_modules' ) );
 
@@ -75,7 +77,7 @@ class Pronamic_WP_Pay_Extensions_WPeCommerce_Extension {
 			'requirements'           => array(
 				'php_version'   => 5.0,
 				'extra_modules' => array(),
-			) ,
+			),
 			'form'                   => 'pronamic_ideal_wpsc_pronamic_merchant_form',
 			'submit_function'        => 'pronamic_ideal_wpsc_pronamic_merchant_submit_function',
 			// this may be legacy, not yet decided
@@ -93,7 +95,7 @@ class Pronamic_WP_Pay_Extensions_WPeCommerce_Extension {
 			'requirements'           => array(
 				'php_version'   => 5.0,
 				'extra_modules' => array(),
-			) ,
+			),
 			'form'                   => 'pronamic_ideal_wpsc_ideal_merchant_form',
 			'submit_function'        => 'pronamic_ideal_wpsc_ideal_merchant_submit_function',
 			// this may be legacy, not yet decided
@@ -177,7 +179,7 @@ class Pronamic_WP_Pay_Extensions_WPeCommerce_Extension {
 			'<a href="%s">%s</a>',
 			add_query_arg( array(
 				'page'           => 'wpsc-sales-logs',
-				'purchaselog_id' => $payment->get_source_id()
+				'purchaselog_id' => $payment->get_source_id(),
 			), admin_url( 'index.php' ) ),
 			sprintf( __( 'Purchase #%s', 'pronamic_ideal' ), $payment->get_source_id() )
 		);

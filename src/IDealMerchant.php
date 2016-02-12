@@ -5,8 +5,10 @@
  * Description:
  * Copyright: Copyright (c) 2005 - 2016
  * Company: Pronamic
+ *
  * @author Remco Tolsma
  * @version 1.0.0
+ * @since 1.0.0
  */
 class Pronamic_WP_Pay_Extensions_WPeCommerce_IDealMerchant extends wpsc_merchant {
 	/**
@@ -32,7 +34,7 @@ class Pronamic_WP_Pay_Extensions_WPeCommerce_IDealMerchant extends wpsc_merchant
 	 * Submit to gateway
 	 */
 	public function submit() {
-		$config_id = get_option( Pronamic_WP_Pay_Extensions_WPeCommerce_Extension::OPTION_IDEAL_CONFIG_ID  );
+		$config_id = get_option( Pronamic_WP_Pay_Extensions_WPeCommerce_Extension::OPTION_IDEAL_CONFIG_ID );
 
 		// Set process to 'order_received' (2)
 		// @see http://plugins.trac.wordpress.org/browser/wp-e-commerce/tags/3.8.7.6.2/wpsc-includes/merchant.class.php#L301
@@ -77,7 +79,7 @@ class Pronamic_WP_Pay_Extensions_WPeCommerce_IDealMerchant extends wpsc_merchant
 		$html .= '	</td>';
 		$html .= '	<td>';
 		$html .= Pronamic_WP_Pay_Admin::dropdown_configs( array(
-			'name' => Pronamic_WP_Pay_Extensions_WPeCommerce_Extension::OPTION_IDEAL_CONFIG_ID ,
+			'name' => Pronamic_WP_Pay_Extensions_WPeCommerce_Extension::OPTION_IDEAL_CONFIG_ID,
 			'echo' => false,
 		) );
 		$html .= '	</td>';
