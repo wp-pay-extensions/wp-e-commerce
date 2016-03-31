@@ -170,22 +170,22 @@ class Pronamic_WP_Pay_Extensions_WPeCommerce_PaymentData extends Pronamic_WP_Pay
 		return $this->get_cart_data( 'email_address' );
 	}
 
-	public function getCustomerName() {
+	public function get_customer_name() {
 		// @see http://plugins.trac.wordpress.org/browser/wp-e-commerce/tags/3.8.7.6.2/wpsc-includes/merchant.class.php#L60
 		return $this->get_cart_data( 'billing_address', 'first_name' ) . ' ' . $this->get_cart_data( 'billing_address', 'last_name' );
 	}
 
-	public function getOwnerAddress() {
+	public function get_address() {
 		// @see http://plugins.trac.wordpress.org/browser/wp-e-commerce/tags/3.8.7.6.2/wpsc-includes/merchant.class.php#L60
 		return $this->get_cart_data( 'billing_address', 'address' );
 	}
 
-	public function getOwnerCity() {
+	public function get_city() {
 		// @see http://plugins.trac.wordpress.org/browser/wp-e-commerce/tags/3.8.7.6.2/wpsc-includes/merchant.class.php#L60
 		return $this->get_cart_data( 'billing_address', 'city' );
 	}
 
-	public function getOwnerZip() {
+	public function get_zip() {
 		// @see http://plugins.trac.wordpress.org/browser/wp-e-commerce/tags/3.8.7.6.2/wpsc-includes/merchant.class.php#L60
 		return $this->get_cart_data( 'billing_address', 'post_code' );
 	}
