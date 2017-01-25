@@ -3,11 +3,11 @@
 /**
  * Title: WP eCommerce extension
  * Description:
- * Copyright: Copyright (c) 2005 - 2016
+ * Copyright: Copyright (c) 2005 - 2017
  * Company: Pronamic
  *
  * @author Remco Tolsma
- * @version 1.0.0
+ * @version 1.0.4
  * @since 1.0.0
  */
 class Pronamic_WP_Pay_Extensions_WPeCommerce_Extension {
@@ -48,13 +48,13 @@ class Pronamic_WP_Pay_Extensions_WPeCommerce_Extension {
 		// Add gateway to gateways
 		add_filter( 'wpsc_merchants_modules',               array( __CLASS__, 'merchants_modules' ) );
 
-		$slug = self::SLUG;
-
 		// Update payment status when returned from iDEAL
-		add_action( "pronamic_payment_status_update_$slug", array( __CLASS__, 'status_update' ), 10, 2 );
+		add_action( 'pronamic_payment_status_update_' . self::SLUG, array( __CLASS__, 'status_update' ), 10, 2 );
 
 		// Source Column
-		add_filter( "pronamic_payment_source_text_$slug",   array( __CLASS__, 'source_text' ), 10, 2 );
+		add_filter( 'pronamic_payment_source_text_' . self::SLUG, array( __CLASS__, 'source_text' ), 10, 2 );
+		add_filter( 'pronamic_payment_source_description_' . self::SLUG,   array( __CLASS__, 'source_description' ), 10, 2 );
+		add_filter( 'pronamic_payment_source_url_' . self::SLUG,   array( __CLASS__, 'source_url' ), 10, 2 );
 	}
 
 	//////////////////////////////////////////////////
@@ -185,5 +185,26 @@ class Pronamic_WP_Pay_Extensions_WPeCommerce_Extension {
 		);
 
 		return $text;
+	}
+
+	/**
+	 * Source description.
+	 */
+	public static function source_description( $description, Pronamic_Pay_Payment $payment ) {
+		$description = __( 'WP e-Commerce Purchase', 'pronamic_ideal' );
+
+		return $description;
+	}
+
+	/**
+	 * Source URL.
+	 */
+	public static function source_url( $url, Pronamic_Pay_Payment $payment ) {
+		$url = add_query_arg( array(
+			'page'           => 'wpsc-sales-logs',
+			'purchaselog_id' => $payment->get_source_id(),
+		), admin_url( 'index.php' ) );
+
+		return $url;
 	}
 }
