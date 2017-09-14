@@ -7,6 +7,9 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## [Unreleased][unreleased]
 -
 
+## [1.0.5] - 2017-09-14
+- Implemented `get_first_name()` and `get_last_name()`.
+
 ## [1.0.4] - 2017-01-25
 - Added filter for payment source description and URL.
 
@@ -27,7 +30,8 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ### Added
 - First release.
 
-[unreleased]: https://github.com/wp-pay-extensions/wp-e-commerce/compare/1.0.4...HEAD
+[unreleased]: https://github.com/wp-pay-extensions/wp-e-commerce/compare/1.0.5...HEAD
+[1.0.5]: https://github.com/wp-pay-extensions/wp-e-commerce/compare/1.0.4...1.0.5
 [1.0.4]: https://github.com/wp-pay-extensions/wp-e-commerce/compare/1.0.3...1.0.4
 [1.0.3]: https://github.com/wp-pay-extensions/wp-e-commerce/compare/1.0.2...1.0.3
 [1.0.2]: https://github.com/wp-pay-extensions/wp-e-commerce/compare/1.0.1...1.0.2
