@@ -1,6 +1,6 @@
 {
   "name": "wp-e-commerce",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "WP eCommerce driver for the WordPress payment processing library.",
   "repository": {
     "type": "git",

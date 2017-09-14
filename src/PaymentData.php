@@ -7,7 +7,7 @@
  * Company: Pronamic
  *
  * @author Remco Tolsma
- * @version 1.0.3
+ * @version 1.0.5
  * @since 1.0.0
  */
 class Pronamic_WP_Pay_Extensions_WPeCommerce_PaymentData extends Pronamic_WP_Pay_PaymentData {
@@ -168,6 +168,16 @@ class Pronamic_WP_Pay_Extensions_WPeCommerce_PaymentData extends Pronamic_WP_Pay
 	public function get_email() {
 		// @see http://plugins.trac.wordpress.org/browser/wp-e-commerce/tags/3.8.7.6.2/wpsc-includes/merchant.class.php#L191
 		return $this->get_cart_data( 'email_address' );
+	}
+
+	public function get_first_name() {
+		// @see http://plugins.trac.wordpress.org/browser/wp-e-commerce/tags/3.8.7.6.2/wpsc-includes/merchant.class.php#L60
+		return $this->get_cart_data( 'billing_address', 'first_name' );
+	}
+
+	public function get_last_name() {
+		// @see http://plugins.trac.wordpress.org/browser/wp-e-commerce/tags/3.8.7.6.2/wpsc-includes/merchant.class.php#L60
+		return $this->get_cart_data( 'billing_address', 'last_name' );
 	}
 
 	public function get_customer_name() {
