@@ -1,4 +1,6 @@
 <?php
+use Pronamic\WordPress\Pay\Payments\Payment;
+use Pronamic\WordPress\Pay\Plugin;
 
 /**
  * Title: WP eCommerce extension
@@ -87,7 +89,7 @@ class Pronamic_WP_Pay_Extensions_WPeCommerce_Extension {
 		$gateways[] = array(
 			'name'                   => __( 'Pronamic iDEAL', 'pronamic_ideal' ),
 			'api_version'            => 2.0,
-			'image'                  => plugins_url( '/images/icon-32x32.png', Pronamic_WP_Pay_Plugin::$file ),
+			'image'                  => plugins_url( '/images/icon-32x32.png', Plugin::$file ),
 			'class_name'             => 'Pronamic_WP_Pay_Extensions_WPeCommerce_IDealMerchant',
 			'has_recurring_billing'  => false,
 			'wp_admin_cannot_cancel' => false,
@@ -170,7 +172,7 @@ class Pronamic_WP_Pay_Extensions_WPeCommerce_Extension {
 	/**
 	 * Source column
 	 */
-	public static function source_text( $text, Pronamic_WP_Pay_Payment $payment ) {
+	public static function source_text( $text, Payment $payment ) {
 		$text  = '';
 
 		$text .= __( 'WP e-Commerce', 'pronamic_ideal' ) . '<br />';

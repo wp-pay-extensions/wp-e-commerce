@@ -1,4 +1,5 @@
 <?php
+use Pronamic\WordPress\Pay\Plugin;
 
 /**
  * Title: WP e-Commerce Pronamic merchant
@@ -41,7 +42,7 @@ class Pronamic_WP_Pay_Extensions_WPeCommerce_PronamicMerchant extends wpsc_merch
 		// @see http://plugins.trac.wordpress.org/browser/wp-e-commerce/tags/3.8.7.6.2/wpsc-core/wpsc-functions.php#L115
 		$this->set_purchase_processed_by_purchid( Pronamic_WP_Pay_Extensions_WPeCommerce_WPeCommerce::PURCHASE_STATUS_ORDER_RECEIVED );
 
-		$gateway = Pronamic_WP_Pay_Plugin::get_gateway( $config_id );
+		$gateway = Plugin::get_gateway( $config_id );
 
 		if ( $gateway ) {
 			$data = new Pronamic_WP_Pay_Extensions_WPeCommerce_PaymentData( $this );
@@ -50,7 +51,7 @@ class Pronamic_WP_Pay_Extensions_WPeCommerce_PronamicMerchant extends wpsc_merch
 
 			$gateway->set_payment_method( $payment_method );
 
-			$payment = Pronamic_WP_Pay_Plugin::start( $config_id, $gateway, $data, $payment_method );
+			$payment = Plugin::start( $config_id, $gateway, $data, $payment_method );
 
 			update_post_meta( $payment->get_id(), '_pronamic_payment_wpsc_purchase_id', $data->get_purchase_id() );
 			update_post_meta( $payment->get_id(), '_pronamic_payment_wpsc_session_id', $data->get_session_id() );
@@ -58,7 +59,7 @@ class Pronamic_WP_Pay_Extensions_WPeCommerce_PronamicMerchant extends wpsc_merch
 			$error = $gateway->get_error();
 
 			if ( is_wp_error( $error ) ) {
-				Pronamic_WP_Pay_Plugin::render_errors( $error );
+				Plugin::render_errors( $error );
 			} else {
 				$gateway->redirect( $payment );
 			}
@@ -87,7 +88,7 @@ class Pronamic_WP_Pay_Extensions_WPeCommerce_PronamicMerchant extends wpsc_merch
 
 		$config_id = get_option( Pronamic_WP_Pay_Extensions_WPeCommerce_Extension::OPTION_PRONAMIC_CONFIG_ID );
 
-		$gateway = Pronamic_WP_Pay_Plugin::get_gateway( $config_id );
+		$gateway = Plugin::get_gateway( $config_id );
 
 		if ( $gateway ) {
 			$payment_method_field = $gateway->get_payment_method_field();
@@ -156,7 +157,7 @@ class Pronamic_WP_Pay_Extensions_WPeCommerce_PronamicMerchant extends wpsc_merch
 
 		$config_id = get_option( Pronamic_WP_Pay_Extensions_WPeCommerce_Extension::OPTION_PRONAMIC_CONFIG_ID );
 
-		$gateway = Pronamic_WP_Pay_Plugin::get_gateway( $config_id );
+		$gateway = Plugin::get_gateway( $config_id );
 
 		if ( $gateway ) {
 			$payment_method = get_option( Pronamic_WP_Pay_Extensions_WPeCommerce_Extension::OPTION_PRONAMIC_PAYMENT_METHOD );
