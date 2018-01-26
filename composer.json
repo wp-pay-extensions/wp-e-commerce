@@ -3,7 +3,7 @@
 	"description": "WP eCommerce driver for the WordPress payment processing library.",
 	"keywords": ["wordpress", "wp", "pay", "wp-e-commerce", "extension", "pronamic"],
 	"homepage": "http://www.wp-pay.org/extensions/wp-e-commerce/",
-	"license": "GPL-3.0+",
+	"license": "GPL-3.0-or-later",
 	"authors": [
 		{
 			"name": "Pronamic",
