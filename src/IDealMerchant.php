@@ -1,4 +1,5 @@
 <?php
+use Pronamic\WordPress\Pay\Core\PaymentMethods;
 use Pronamic\WordPress\Pay\Plugin;
 
 /**
@@ -47,7 +48,7 @@ class Pronamic_WP_Pay_Extensions_WPeCommerce_IDealMerchant extends wpsc_merchant
 		if ( $gateway ) {
 			$data = new Pronamic_WP_Pay_Extensions_WPeCommerce_PaymentData( $this );
 
-			$payment_method = Pronamic_WP_Pay_PaymentMethods::IDEAL;
+			$payment_method = PaymentMethods::IDEAL;
 
 			$gateway->set_payment_method( $payment_method );
 
@@ -119,7 +120,7 @@ class Pronamic_WP_Pay_Extensions_WPeCommerce_IDealMerchant extends wpsc_merchant
 		$gateway = Plugin::get_gateway( $config_id );
 
 		if ( $gateway ) {
-			$gateway->set_payment_method( Pronamic_WP_Pay_PaymentMethods::IDEAL );
+			$gateway->set_payment_method( PaymentMethods::IDEAL );
 
 			$output = $gateway->get_input_html();
 		}

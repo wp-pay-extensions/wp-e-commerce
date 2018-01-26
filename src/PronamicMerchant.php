@@ -1,5 +1,6 @@
 <?php
 use Pronamic\WordPress\Pay\Plugin;
+use Pronamic\WordPress\Pay\Util;
 
 /**
  * Title: WP e-Commerce Pronamic merchant
@@ -100,7 +101,7 @@ class Pronamic_WP_Pay_Extensions_WPeCommerce_PronamicMerchant extends wpsc_merch
 
 				$payment_method = get_option( $name );
 
-				$options = Pronamic_WP_HTML_Helper::select_options_grouped( $choices, $payment_method );
+				$options = Util::select_options_grouped( $choices, $payment_method );
 				// Double quotes are not working, se we replace them with an single quote
 				$options = str_replace( '"', '\'', $options );
 
