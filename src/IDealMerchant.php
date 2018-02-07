@@ -94,7 +94,7 @@ class Pronamic_WP_Pay_Extensions_WPeCommerce_IDealMerchant extends wpsc_merchant
 	 * Admin config submit
 	 */
 	public static function admin_config_submit() {
-		$name = Pronamic_WP_Pay_Extensions_WPeCommerce_Extension::OPTION_IDEAL_CONFIG_ID ;
+		$name = Pronamic_WP_Pay_Extensions_WPeCommerce_Extension::OPTION_IDEAL_CONFIG_ID;
 
 		if ( filter_has_var( INPUT_POST, $name ) ) {
 			$config_id = filter_input( INPUT_POST, $name, FILTER_SANITIZE_STRING );

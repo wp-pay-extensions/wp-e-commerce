@@ -229,8 +229,8 @@ class Pronamic_WP_Pay_Extensions_WPeCommerce_PaymentData extends PaymentData {
 		return add_query_arg(
 			array(
 				// 'sessionid' => $this->merchant->cart_data['session_id'],
-				'gateway'   => 'wpsc_merchant_pronamic_ideal',
-				'return'    => 'cancel',
+				'gateway' => 'wpsc_merchant_pronamic_ideal',
+				'return'  => 'cancel',
 			),
 			get_option( 'transact_url' )
 		);
@@ -256,8 +256,8 @@ class Pronamic_WP_Pay_Extensions_WPeCommerce_PaymentData extends PaymentData {
 		return add_query_arg(
 			array(
 				// 'sessionid' => $this->merchant->cart_data['session_id'],
-				'gateway'   => 'wpsc_merchant_pronamic_ideal',
-				'return'    => 'error',
+				'gateway' => 'wpsc_merchant_pronamic_ideal',
+				'return'  => 'error',
 			),
 			get_option( 'transact_url' )
 		);

@@ -49,15 +49,15 @@ class Pronamic_WP_Pay_Extensions_WPeCommerce_Extension {
 	 */
 	public static function bootstrap() {
 		// Add gateway to gateways
-		add_filter( 'wpsc_merchants_modules',               array( __CLASS__, 'merchants_modules' ) );
+		add_filter( 'wpsc_merchants_modules', array( __CLASS__, 'merchants_modules' ) );
 
 		// Update payment status when returned from iDEAL
 		add_action( 'pronamic_payment_status_update_' . self::SLUG, array( __CLASS__, 'status_update' ), 10, 2 );
 
 		// Source Column
 		add_filter( 'pronamic_payment_source_text_' . self::SLUG, array( __CLASS__, 'source_text' ), 10, 2 );
-		add_filter( 'pronamic_payment_source_description_' . self::SLUG,   array( __CLASS__, 'source_description' ), 10, 2 );
-		add_filter( 'pronamic_payment_source_url_' . self::SLUG,   array( __CLASS__, 'source_url' ), 10, 2 );
+		add_filter( 'pronamic_payment_source_description_' . self::SLUG, array( __CLASS__, 'source_description' ), 10, 2 );
+		add_filter( 'pronamic_payment_source_url_' . self::SLUG, array( __CLASS__, 'source_url' ), 10, 2 );
 	}
 
 	//////////////////////////////////////////////////
@@ -120,6 +120,7 @@ class Pronamic_WP_Pay_Extensions_WPeCommerce_Extension {
 	 */
 	public static function status_update( Pronamic_Pay_Payment $payment, $can_redirect = false ) {
 		$merchant = new Pronamic_WP_Pay_Extensions_WPeCommerce_IDealMerchant( $payment->get_source_id() );
+
 		$data = new Pronamic_WP_Pay_Extensions_WPeCommerce_PaymentData( $merchant );
 
 		$url = $data->get_normal_return_url();
@@ -133,10 +134,8 @@ class Pronamic_WP_Pay_Extensions_WPeCommerce_Extension {
 
 				break;
 			case Statuses::EXPIRED:
-
 				break;
 			case Statuses::FAILURE:
-
 				break;
 			case Statuses::SUCCESS:
 				/*
@@ -154,10 +153,8 @@ class Pronamic_WP_Pay_Extensions_WPeCommerce_Extension {
 
 				break;
 			case Statuses::OPEN:
-
 				break;
 			default:
-
 				break;
 		}
 
@@ -174,9 +171,7 @@ class Pronamic_WP_Pay_Extensions_WPeCommerce_Extension {
 	 * Source column
 	 */
 	public static function source_text( $text, Payment $payment ) {
-		$text  = '';
-
-		$text .= __( 'WP e-Commerce', 'pronamic_ideal' ) . '<br />';
+		$text = __( 'WP e-Commerce', 'pronamic_ideal' ) . '<br />';
 
 		$text .= sprintf(
 			'<a href="%s">%s</a>',
