@@ -24,8 +24,9 @@
 		"source": "https://github.com/wp-pay-extensions/wp-e-commerce"
 	},
 	"autoload": {
-		"classmap": ["src/"],
-		"files": ["src/functions.php"]
+		"psr-4": {
+			"Pronamic\\WordPress\\Pay\\Extensions\\WPeCommerce\\": "src/"
+		}
 	},
 	"config": {
 		"platform": {
