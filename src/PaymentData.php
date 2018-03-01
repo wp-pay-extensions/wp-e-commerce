@@ -26,8 +26,6 @@ class PaymentData extends Pay_PaymentData {
 	 */
 	private $merchant;
 
-	//////////////////////////////////////////////////
-
 	/**
 	 * Constructs and initializes an iDEAL WP e-Commerce data proxy
 	 *
@@ -38,10 +36,6 @@ class PaymentData extends Pay_PaymentData {
 
 		$this->merchant = $merchant;
 	}
-
-	//////////////////////////////////////////////////
-	// WP e-Commerce specific
-	//////////////////////////////////////////////////
 
 	/**
 	 * Get purchase ID
@@ -91,10 +85,6 @@ class PaymentData extends Pay_PaymentData {
 		return $data;
 	}
 
-	//////////////////////////////////////////////////
-	// Other
-	//////////////////////////////////////////////////
-
 	/**
 	 * Get source indicator
 	 *
@@ -104,8 +94,6 @@ class PaymentData extends Pay_PaymentData {
 	public function get_source() {
 		return 'wp-e-commerce';
 	}
-
-	//////////////////////////////////////////////////
 
 	/**
 	 * Get description
@@ -153,10 +141,6 @@ class PaymentData extends Pay_PaymentData {
 		return $items;
 	}
 
-	//////////////////////////////////////////////////
-	// Currency
-	//////////////////////////////////////////////////
-
 	/**
 	 * Get currency alphabetic code
 	 *
@@ -167,10 +151,6 @@ class PaymentData extends Pay_PaymentData {
 		// @see http://plugins.trac.wordpress.org/browser/wp-e-commerce/tags/3.8.7.6.2/wpsc-includes/merchant.class.php#L177
 		return $this->get_cart_data( 'store_currency' );
 	}
-
-	//////////////////////////////////////////////////
-	// Customer
-	//////////////////////////////////////////////////
 
 	public function get_email() {
 		// @see http://plugins.trac.wordpress.org/browser/wp-e-commerce/tags/3.8.7.6.2/wpsc-includes/merchant.class.php#L191
@@ -207,12 +187,12 @@ class PaymentData extends Pay_PaymentData {
 		return $this->get_cart_data( 'billing_address', 'post_code' );
 	}
 
-	//////////////////////////////////////////////////
-	// URL's
-	// @todo we could also use $this->merchant->cart_data['transaction_results_url']
-	// @see http://plugins.trac.wordpress.org/browser/wp-e-commerce/tags/3.8.8.3/wpsc-includes/merchant.class.php#L184
-	//////////////////////////////////////////////////
-
+	/**
+	 * URL's
+	 *
+	 * @todo we could also use $this->merchant->cart_data['transaction_results_url']
+	 * @see http://plugins.trac.wordpress.org/browser/wp-e-commerce/tags/3.8.8.3/wpsc-includes/merchant.class.php#L184
+	 */
 	public function get_normal_return_url() {
 		return add_query_arg(
 			array(

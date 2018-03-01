@@ -45,8 +45,6 @@ class Gateway extends wpsc_merchant {
 		$this->name = PaymentMethods::get_name( static::PAYMENT_METHOD, __( 'Pronamic', 'pronamic_ideal' ) );
 	}
 
-	//////////////////////////////////////////////////
-
 	/**
 	 * Construct value array specific data array
 	 */
@@ -95,8 +93,6 @@ class Gateway extends wpsc_merchant {
 			$gateway->redirect( $payment );
 		}
 	}
-
-	//////////////////////////////////////////////////
 
 	/**
 	 * Admin configuration form
@@ -184,8 +180,6 @@ class Gateway extends wpsc_merchant {
 
 		return true;
 	}
-
-	//////////////////////////////////////////////////
 
 	/**
 	 * Advanced inputs
