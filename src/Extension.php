@@ -198,6 +198,7 @@ class Extension {
 				'page'           => 'wpsc-sales-logs',
 				'purchaselog_id' => $payment->get_source_id(),
 			), admin_url( 'index.php' ) ),
+			/* translators: %s: payment source id */
 			sprintf( __( 'Purchase #%s', 'pronamic_ideal' ), $payment->get_source_id() )
 		);
 

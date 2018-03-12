@@ -103,6 +103,7 @@ class PaymentData extends Pay_PaymentData {
 	 */
 	public function get_description() {
 		// @see http://plugins.trac.wordpress.org/browser/wp-e-commerce/tags/3.8.7.6.2/wpsc-includes/merchant.class.php#L41
+		/* translators: %s: purchase id */
 		return sprintf( __( 'Order %s', 'pronamic_ideal' ), $this->merchant->purchase_id );
 	}
 
@@ -131,6 +132,7 @@ class PaymentData extends Pay_PaymentData {
 		// We only add one total item, because iDEAL cant work with negative price items (discount)
 		$item = new Item();
 		$item->setNumber( $this->merchant->purchase_id );
+		/* translators: %s: purchase id */
 		$item->setDescription( sprintf( __( 'Order %s', 'pronamic_ideal' ), $this->merchant->purchase_id ) );
 		// @see http://plugins.trac.wordpress.org/browser/wp-e-commerce/tags/3.8.7.6.2/wpsc-includes/merchant.class.php#L188
 		$item->setPrice( $this->get_cart_data( 'total_price' ) );
