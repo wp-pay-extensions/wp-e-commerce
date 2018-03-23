@@ -124,16 +124,14 @@ class Gateway extends wpsc_merchant {
 			return $html;
 		}
 
-		$payment_method_field = $gateway->get_payment_method_field();
+		$payment_methods = $gateway->get_payment_method_field_options();
 
-		if ( $payment_method_field ) {
-			$choices = $payment_method_field['choices'];
-
+		if ( ! empty( $payment_methods ) ) {
 			$name = Extension::OPTION_PRONAMIC_PAYMENT_METHOD;
 
 			$payment_method = get_option( $name, null );
 
-			$options = Pay_Util::select_options_grouped( $choices, $payment_method );
+			$options = Pay_Util::select_options_grouped( $payment_methods, $payment_method );
 			// Double quotes are not working, se we replace them with an single quote
 			$options = str_replace( '"', '\'', $options );
 
