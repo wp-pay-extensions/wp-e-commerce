@@ -1,16 +1,23 @@
 <?php
 
+namespace Pronamic\WordPress\Pay\Extensions\WPeCommerce;
+
+use Pronamic\WordPress\Pay\Payments\PaymentData as Pay_PaymentData;
+use Pronamic\WordPress\Pay\Payments\Item;
+use Pronamic\WordPress\Pay\Payments\Items;
+use wpsc_merchant;
+
 /**
  * Title: WP e-Commerce payment data
  * Description:
- * Copyright: Copyright (c) 2005 - 2017
+ * Copyright: Copyright (c) 2005 - 2018
  * Company: Pronamic
  *
- * @author Remco Tolsma
- * @version 1.0.5
- * @since 1.0.0
+ * @author  Remco Tolsma
+ * @version 2.0.0
+ * @since   1.0.0
  */
-class Pronamic_WP_Pay_Extensions_WPeCommerce_PaymentData extends Pronamic_WP_Pay_PaymentData {
+class PaymentData extends Pay_PaymentData {
 	/**
 	 * Merchant
 	 *
@@ -18,8 +25,6 @@ class Pronamic_WP_Pay_Extensions_WPeCommerce_PaymentData extends Pronamic_WP_Pay
 	 * @see http://plugins.trac.wordpress.org/browser/wp-e-commerce/tags/3.8.7.6.2/wpsc-includes/merchant.class.php
 	 */
 	private $merchant;
-
-	//////////////////////////////////////////////////
 
 	/**
 	 * Constructs and initializes an iDEAL WP e-Commerce data proxy
@@ -31,10 +36,6 @@ class Pronamic_WP_Pay_Extensions_WPeCommerce_PaymentData extends Pronamic_WP_Pay
 
 		$this->merchant = $merchant;
 	}
-
-	//////////////////////////////////////////////////
-	// WP e-Commerce specific
-	//////////////////////////////////////////////////
 
 	/**
 	 * Get purchase ID
@@ -52,7 +53,6 @@ class Pronamic_WP_Pay_Extensions_WPeCommerce_PaymentData extends Pronamic_WP_Pay
 		return $purchase_id;
 	}
 
-
 	/**
 	 * Get session ID
 	 *
@@ -66,8 +66,9 @@ class Pronamic_WP_Pay_Extensions_WPeCommerce_PaymentData extends Pronamic_WP_Pay
 	/**
 	 * Get cart data
 	 *
-	 * @param sring $key1
+	 * @param string  $key1
 	 * @param string $key2
+	 *
 	 * @return string
 	 */
 	private function get_cart_data( $key1, $key2 = null ) {
@@ -76,17 +77,13 @@ class Pronamic_WP_Pay_Extensions_WPeCommerce_PaymentData extends Pronamic_WP_Pay
 		if ( isset( $this->merchant->cart_data[ $key1 ] ) ) {
 			$data = $this->merchant->cart_data[ $key1 ];
 
-			if ( isset( $key2 ) && is_array( $data ) && isset( $data[ $key2 ] ) ) {
+			if ( null !== $key2 && is_array( $data ) && isset( $data[ $key2 ] ) ) {
 				$data = $data[ $key2 ];
 			}
 		}
 
 		return $data;
 	}
-
-	//////////////////////////////////////////////////
-	// Other
-	//////////////////////////////////////////////////
 
 	/**
 	 * Get source indicator
@@ -98,8 +95,6 @@ class Pronamic_WP_Pay_Extensions_WPeCommerce_PaymentData extends Pronamic_WP_Pay
 		return 'wp-e-commerce';
 	}
 
-	//////////////////////////////////////////////////
-
 	/**
 	 * Get description
 	 *
@@ -108,6 +103,7 @@ class Pronamic_WP_Pay_Extensions_WPeCommerce_PaymentData extends Pronamic_WP_Pay
 	 */
 	public function get_description() {
 		// @see http://plugins.trac.wordpress.org/browser/wp-e-commerce/tags/3.8.7.6.2/wpsc-includes/merchant.class.php#L41
+		/* translators: %s: purchase id */
 		return sprintf( __( 'Order %s', 'pronamic_ideal' ), $this->merchant->purchase_id );
 	}
 
@@ -126,16 +122,17 @@ class Pronamic_WP_Pay_Extensions_WPeCommerce_PaymentData extends Pronamic_WP_Pay
 	 * Get items
 	 *
 	 * @see Pronamic_Pay_PaymentDataInterface::get_items()
-	 * @return Pronamic_IDeal_Items
+	 * @return Items
 	 */
 	public function get_items() {
 		// Items
-		$items = new Pronamic_IDeal_Items();
+		$items = new Items();
 
 		// Item
 		// We only add one total item, because iDEAL cant work with negative price items (discount)
-		$item = new Pronamic_IDeal_Item();
+		$item = new Item();
 		$item->setNumber( $this->merchant->purchase_id );
+		/* translators: %s: purchase id */
 		$item->setDescription( sprintf( __( 'Order %s', 'pronamic_ideal' ), $this->merchant->purchase_id ) );
 		// @see http://plugins.trac.wordpress.org/browser/wp-e-commerce/tags/3.8.7.6.2/wpsc-includes/merchant.class.php#L188
 		$item->setPrice( $this->get_cart_data( 'total_price' ) );
@@ -145,10 +142,6 @@ class Pronamic_WP_Pay_Extensions_WPeCommerce_PaymentData extends Pronamic_WP_Pay
 
 		return $items;
 	}
-
-	//////////////////////////////////////////////////
-	// Currency
-	//////////////////////////////////////////////////
 
 	/**
 	 * Get currency alphabetic code
@@ -160,10 +153,6 @@ class Pronamic_WP_Pay_Extensions_WPeCommerce_PaymentData extends Pronamic_WP_Pay
 		// @see http://plugins.trac.wordpress.org/browser/wp-e-commerce/tags/3.8.7.6.2/wpsc-includes/merchant.class.php#L177
 		return $this->get_cart_data( 'store_currency' );
 	}
-
-	//////////////////////////////////////////////////
-	// Customer
-	//////////////////////////////////////////////////
 
 	public function get_email() {
 		// @see http://plugins.trac.wordpress.org/browser/wp-e-commerce/tags/3.8.7.6.2/wpsc-includes/merchant.class.php#L191
@@ -200,12 +189,12 @@ class Pronamic_WP_Pay_Extensions_WPeCommerce_PaymentData extends Pronamic_WP_Pay
 		return $this->get_cart_data( 'billing_address', 'post_code' );
 	}
 
-	//////////////////////////////////////////////////
-	// URL's
-	// @todo we could also use $this->merchant->cart_data['transaction_results_url']
-	// @see http://plugins.trac.wordpress.org/browser/wp-e-commerce/tags/3.8.8.3/wpsc-includes/merchant.class.php#L184
-	//////////////////////////////////////////////////
-
+	/**
+	 * URL's
+	 *
+	 * @todo we could also use $this->merchant->cart_data['transaction_results_url']
+	 * @see http://plugins.trac.wordpress.org/browser/wp-e-commerce/tags/3.8.8.3/wpsc-includes/merchant.class.php#L184
+	 */
 	public function get_normal_return_url() {
 		return add_query_arg(
 			array(
@@ -226,8 +215,8 @@ class Pronamic_WP_Pay_Extensions_WPeCommerce_PaymentData extends Pronamic_WP_Pay
 		return add_query_arg(
 			array(
 				// 'sessionid' => $this->merchant->cart_data['session_id'],
-				'gateway'   => 'wpsc_merchant_pronamic_ideal',
-				'return'    => 'cancel',
+				'gateway' => 'wpsc_merchant_pronamic_ideal',
+				'return'  => 'cancel',
 			),
 			get_option( 'transact_url' )
 		);
@@ -253,8 +242,8 @@ class Pronamic_WP_Pay_Extensions_WPeCommerce_PaymentData extends Pronamic_WP_Pay
 		return add_query_arg(
 			array(
 				// 'sessionid' => $this->merchant->cart_data['session_id'],
-				'gateway'   => 'wpsc_merchant_pronamic_ideal',
-				'return'    => 'error',
+				'gateway' => 'wpsc_merchant_pronamic_ideal',
+				'return'  => 'error',
 			),
 			get_option( 'transact_url' )
 		);
