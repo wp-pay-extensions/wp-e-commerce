@@ -60,8 +60,8 @@ class Gateway extends wpsc_merchant {
 		$config_id = get_option( static::OPTION_CONFIG_ID, null );
 
 		// Set process to 'order_received' (2)
-		// @see http://plugins.trac.wordpress.org/browser/wp-e-commerce/tags/3.8.7.6.2/wpsc-includes/merchant.class.php#L301
-		// @see http://plugins.trac.wordpress.org/browser/wp-e-commerce/tags/3.8.7.6.2/wpsc-core/wpsc-functions.php#L115
+		// @link https://plugins.trac.wordpress.org/browser/wp-e-commerce/tags/3.8.7.6.2/wpsc-includes/merchant.class.php#L301
+		// @link https://plugins.trac.wordpress.org/browser/wp-e-commerce/tags/3.8.7.6.2/wpsc-core/wpsc-functions.php#L115
 		$this->set_purchase_processed_by_purchid( WPeCommerce::PURCHASE_STATUS_ORDER_RECEIVED );
 
 		$gateway = Plugin::get_gateway( $config_id );
