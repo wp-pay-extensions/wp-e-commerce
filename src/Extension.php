@@ -75,7 +75,7 @@ class Extension {
 		);
 
 		$gateways[] = array(
-			'name'                   => __( 'Pronamic iDEAL', 'pronamic_ideal' ),
+			'name'                   => __( 'Pronamic - iDEAL', 'pronamic_ideal' ),
 			'api_version'            => 2.0,
 			'image'                  => plugins_url( '/images/ideal/icon-32x32.png', Plugin::$file ),
 			'class_name'             => __NAMESPACE__ . '\IDealGateway',
@@ -125,7 +125,7 @@ class Extension {
 				/*
 				 * Transactions results
 				 *
-				 * @see https://github.com/wp-e-commerce/WP-e-Commerce/blob/v3.8.9.5/wpsc-merchants/paypal-pro.merchant.php#L303
+				 * @link https://github.com/wp-e-commerce/WP-e-Commerce/blob/v3.8.9.5/wpsc-merchants/paypal-pro.merchant.php#L303
 				 */
 				$session_id = get_post_meta( $payment->get_id(), '_pronamic_payment_wpsc_session_id', true );
 
