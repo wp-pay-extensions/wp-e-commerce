@@ -1,6 +1,6 @@
 <?php
 
-namespace Pronamic\WordPress\Pay\Extensions\WPeCommerce;
+namespace Pronamic\WordPress\Pay\Extensions\WPeCommerce\Gateways;
 
 use Pronamic\WordPress\Pay\Core\PaymentMethods;
 
