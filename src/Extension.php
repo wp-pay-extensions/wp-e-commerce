@@ -14,7 +14,7 @@ use Pronamic\WordPress\Pay\Plugin;
  * Company: Pronamic
  *
  * @author  Remco Tolsma
- * @version 2.0.0
+ * @version 2.0.2
  * @since   1.0.0
  */
 class Extension {
@@ -60,61 +60,61 @@ class Extension {
 		global $nzshpcrt_gateways, $num, $wpsc_gateways, $gateway_checkout_form_fields;
 
 		$classes = array(
-			'Gateway' => array(
-				'name'                   => __( 'Pronamic', 'pronamic_ideal' ),
-				'display_name'           => __( 'Pronamic', 'pronamic_ideal' ),
-				'internalname'           => 'wpsc_merchant_pronamic',
+			'Gateway'             => array(
+				'name'         => __( 'Pronamic', 'pronamic_ideal' ),
+				'display_name' => __( 'Pronamic', 'pronamic_ideal' ),
+				'internalname' => 'wpsc_merchant_pronamic',
 			),
-			'AfterPayGateway' => array(
-				'name'                   => __( 'Pronamic - AfterPay', 'pronamic_ideal' ),
-				'display_name'           => __( 'AfterPay', 'pronamic_ideal' ),
-				'internalname'           => 'wpsc_merchant_pronamic_afterpay',
+			'AfterPayGateway'     => array(
+				'name'         => __( 'Pronamic - AfterPay', 'pronamic_ideal' ),
+				'display_name' => __( 'AfterPay', 'pronamic_ideal' ),
+				'internalname' => 'wpsc_merchant_pronamic_afterpay',
 			),
-			'BancontactGateway' => array(
-				'name'                   => __( 'Pronamic - Bancontact', 'pronamic_ideal' ),
-				'display_name'           => __( 'Bancontact', 'pronamic_ideal' ),
-				'internalname'           => 'wpsc_merchant_pronamic_bancontact',
+			'BancontactGateway'   => array(
+				'name'         => __( 'Pronamic - Bancontact', 'pronamic_ideal' ),
+				'display_name' => __( 'Bancontact', 'pronamic_ideal' ),
+				'internalname' => 'wpsc_merchant_pronamic_bancontact',
 			),
 			'BankTransferGateway' => array(
-				'name'                   => __( 'Pronamic - Bank Transfer', 'pronamic_ideal' ),
-				'display_name'           => __( 'Bank Transfer', 'pronamic_ideal' ),
-				'internalname'           => 'wpsc_merchant_pronamic_bank_transfer',
+				'name'         => __( 'Pronamic - Bank Transfer', 'pronamic_ideal' ),
+				'display_name' => __( 'Bank Transfer', 'pronamic_ideal' ),
+				'internalname' => 'wpsc_merchant_pronamic_bank_transfer',
 			),
-			'CreditCardGateway' => array(
-				'name'                   => __( 'Pronamic - Credit Card', 'pronamic_ideal' ),
-				'display_name'           => __( 'Credit Card', 'pronamic_ideal' ),
-				'internalname'           => 'wpsc_merchant_pronamic_credit_card',
+			'CreditCardGateway'   => array(
+				'name'         => __( 'Pronamic - Credit Card', 'pronamic_ideal' ),
+				'display_name' => __( 'Credit Card', 'pronamic_ideal' ),
+				'internalname' => 'wpsc_merchant_pronamic_credit_card',
 			),
-			'FocumGateway' => array(
-				'name'                   => __( 'Pronamic - Focum', 'pronamic_ideal' ),
-				'display_name'           => __( 'Focum', 'pronamic_ideal' ),
-				'internalname'           => 'wpsc_merchant_pronamic_focum',
+			'FocumGateway'        => array(
+				'name'         => __( 'Pronamic - Focum', 'pronamic_ideal' ),
+				'display_name' => __( 'Focum', 'pronamic_ideal' ),
+				'internalname' => 'wpsc_merchant_pronamic_focum',
 			),
-			'GiropayGateway' => array(
-				'name'                   => __( 'Pronamic - Giropay', 'pronamic_ideal' ),
-				'display_name'           => __( 'Giropay', 'pronamic_ideal' ),
-				'internalname'           => 'wpsc_merchant_pronamic_giropay',
+			'GiropayGateway'      => array(
+				'name'         => __( 'Pronamic - Giropay', 'pronamic_ideal' ),
+				'display_name' => __( 'Giropay', 'pronamic_ideal' ),
+				'internalname' => 'wpsc_merchant_pronamic_giropay',
 			),
-			'IDealGateway' => array(
-				'name'                   => __( 'Pronamic - iDEAL', 'pronamic_ideal' ),
-				'image'                  => plugins_url( '/images/ideal/icon-32x32.png', Plugin::$file ),
-				'display_name'           => __( 'iDEAL', 'pronamic_ideal' ),
-				'internalname'           => 'wpsc_merchant_pronamic_ideal',
+			'IDealGateway'        => array(
+				'name'         => __( 'Pronamic - iDEAL', 'pronamic_ideal' ),
+				'image'        => plugins_url( '/images/ideal/icon-32x32.png', Plugin::$file ),
+				'display_name' => __( 'iDEAL', 'pronamic_ideal' ),
+				'internalname' => 'wpsc_merchant_pronamic_ideal',
 			),
-			'MaestroGateway' => array(
-				'name'                   => __( 'Pronamic - Maestro', 'pronamic_ideal' ),
-				'display_name'           => __( 'Maestro', 'pronamic_ideal' ),
-				'internalname'           => 'wpsc_merchant_pronamic_maestro',
+			'MaestroGateway'      => array(
+				'name'         => __( 'Pronamic - Maestro', 'pronamic_ideal' ),
+				'display_name' => __( 'Maestro', 'pronamic_ideal' ),
+				'internalname' => 'wpsc_merchant_pronamic_maestro',
 			),
-			'PayPalGateway' => array(
-				'name'                   => __( 'Pronamic - PayPal', 'pronamic_ideal' ),
-				'display_name'           => __( 'PayPal', 'pronamic_ideal' ),
-				'internalname'           => 'wpsc_merchant_pronamic_paypal',
+			'PayPalGateway'       => array(
+				'name'         => __( 'Pronamic - PayPal', 'pronamic_ideal' ),
+				'display_name' => __( 'PayPal', 'pronamic_ideal' ),
+				'internalname' => 'wpsc_merchant_pronamic_paypal',
 			),
-			'SofortGateway' => array(
-				'name'                   => __( 'Pronamic - SOFORT', 'pronamic_ideal' ),
-				'display_name'           => __( 'SOFORT', 'pronamic_ideal' ),
-				'internalname'           => 'wpsc_merchant_pronamic_sofort',
+			'SofortGateway'       => array(
+				'name'         => __( 'Pronamic - SOFORT', 'pronamic_ideal' ),
+				'display_name' => __( 'SOFORT', 'pronamic_ideal' ),
+				'internalname' => 'wpsc_merchant_pronamic_sofort',
 			),
 		);
 
@@ -124,18 +124,21 @@ class Extension {
 				$class
 			);
 
-			$args = wp_parse_args( $args, array(
-				'api_version'            => 2.0,
-				'class_name'             => $class_name,
-				'has_recurring_billing'  => false,
-				'wp_admin_cannot_cancel' => false,
-				'requirements'           => array(
-					'php_version'   => 5.3,
-					'extra_modules' => array(),
-				),
-				'form'                   => array( $class_name, 'admin_config_form' ),
-				'submit_function'        => array( $class_name, 'admin_config_submit' ),
-			) );
+			$args = wp_parse_args(
+				$args,
+				array(
+					'api_version'            => 2.0,
+					'class_name'             => $class_name,
+					'has_recurring_billing'  => false,
+					'wp_admin_cannot_cancel' => false,
+					'requirements'           => array(
+						'php_version'   => 5.3,
+						'extra_modules' => array(),
+					),
+					'form'                   => $class_name . '::admin_config_form',
+					'submit_function'        => $class_name . '::admin_config_submit',
+				)
+			);
 
 			$gateways[] = $args;
 		}
@@ -243,10 +246,13 @@ class Extension {
 
 		$text .= sprintf(
 			'<a href="%s">%s</a>',
-			add_query_arg( array(
-				'page'           => 'wpsc-sales-logs',
-				'purchaselog_id' => $payment->get_source_id(),
-			), admin_url( 'index.php' ) ),
+			add_query_arg(
+				array(
+					'page'           => 'wpsc-sales-logs',
+					'purchaselog_id' => $payment->get_source_id(),
+				),
+				admin_url( 'index.php' )
+			),
 			/* translators: %s: payment source id */
 			sprintf( __( 'Purchase #%s', 'pronamic_ideal' ), $payment->get_source_id() )
 		);
@@ -275,10 +281,13 @@ class Extension {
 	 * @return string
 	 */
 	public static function source_url( $url, Payment $payment ) {
-		$url = add_query_arg( array(
-			'page'           => 'wpsc-sales-logs',
-			'purchaselog_id' => $payment->get_source_id(),
-		), admin_url( 'index.php' ) );
+		$url = add_query_arg(
+			array(
+				'page'           => 'wpsc-sales-logs',
+				'purchaselog_id' => $payment->get_source_id(),
+			),
+			admin_url( 'index.php' )
+		);
 
 		return $url;
 	}

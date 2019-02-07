@@ -2,6 +2,7 @@
 
 namespace Pronamic\WordPress\Pay\Extensions\WPeCommerce\Gateways;
 
+use Pronamic\WordPress\Pay\Extensions\WPeCommerce\Extension;
 use Pronamic\WordPress\Pay\Admin\AdminModule;
 use Pronamic\WordPress\Pay\Core\PaymentMethods;
 use Pronamic\WordPress\Pay\Plugin;
@@ -15,7 +16,7 @@ use wpsc_merchant;
  * Company: Pronamic
  *
  * @author  Remco Tolsma
- * @version 2.0.0
+ * @version 2.0.2
  * @since   1.0.0
  */
 class Gateway extends wpsc_merchant {
@@ -25,13 +26,6 @@ class Gateway extends wpsc_merchant {
 	 * @var string $payment_method
 	 */
 	const PAYMENT_METHOD = null;
-
-	/**
-	 * Config ID option name.
-	 *
-	 * @var string
-	 */
-	const OPTION_CONFIG_ID = 'pronamic_pay_pronamic_wpsc_config_id';
 
 	/**
 	 * Construct and initialize an Pronamic merchant class
@@ -46,6 +40,36 @@ class Gateway extends wpsc_merchant {
 	}
 
 	/**
+	 * Get option config ID.
+	 *
+	 * @return string
+	 */
+	private static function get_option_config_id() {
+		$method = static::PAYMENT_METHOD;
+		$method = ( null === $method ) ? 'pronamic' : $method;
+
+		$name = sprintf(
+			'pronamic_pay_%s_wpsc_config_id',
+			$method
+		);
+
+		return $name;
+	}
+
+	/**
+	 * Get config ID.
+	 *
+	 * @return string
+	 */
+	private static function get_config_id() {
+		$name = self::get_option_config_id();
+
+		$config_id = get_option( $name, null );
+
+		return $config_id;
+	}
+
+	/**
 	 * Construct value array specific data array
 	 */
 	public function construct_value_array() {
@@ -57,7 +81,7 @@ class Gateway extends wpsc_merchant {
 	 * Submit to gateway
 	 */
 	public function submit() {
-		$config_id = get_option( static::OPTION_CONFIG_ID, null );
+		$config_id = self::get_config_id();
 
 		// Set process to 'order_received' (2)
 		// @link https://plugins.trac.wordpress.org/browser/wp-e-commerce/tags/3.8.7.6.2/wpsc-includes/merchant.class.php#L301
@@ -72,13 +96,11 @@ class Gateway extends wpsc_merchant {
 
 		$data = new PaymentData( $this );
 
-		if ( null === static::PAYMENT_METHOD ) {
-			$payment_method = get_option( Extension::OPTION_PRONAMIC_PAYMENT_METHOD, null );
-		} else {
-			$payment_method = static::PAYMENT_METHOD;
-		}
+		$payment_method = static::PAYMENT_METHOD;
 
-		$gateway->set_payment_method( $payment_method );
+		if ( null !== $payment_method ) {
+			$gateway->set_payment_method( $payment_method );
+		}
 
 		$payment = Plugin::start( $config_id, $gateway, $data, $payment_method );
 
@@ -98,6 +120,8 @@ class Gateway extends wpsc_merchant {
 	 * Admin configuration form
 	 */
 	public static function admin_config_form() {
+		$name = self::get_option_config_id();
+
 		$html = '';
 
 		$html .= '<tr>';
@@ -105,47 +129,14 @@ class Gateway extends wpsc_merchant {
 		$html .= '		' . __( 'Configuration', 'pronamic_ideal' );
 		$html .= '	</td>';
 		$html .= '	<td>';
-		$html .= AdminModule::dropdown_configs( array(
-			'name' => static::OPTION_CONFIG_ID,
-			'echo' => false,
-		) );
+		$html .= AdminModule::dropdown_configs(
+			array(
+				'name' => $name,
+				'echo' => false,
+			)
+		);
 		$html .= '	</td>';
 		$html .= '</tr>';
-
-		if ( null !== static::PAYMENT_METHOD ) {
-			return $html;
-		}
-
-		$config_id = get_option( static::OPTION_CONFIG_ID, null );
-
-		$gateway = Plugin::get_gateway( $config_id );
-
-		if ( ! $gateway ) {
-			return $html;
-		}
-
-		$payment_methods = $gateway->get_payment_method_field_options();
-
-		if ( ! empty( $payment_methods ) ) {
-			$name = Extension::OPTION_PRONAMIC_PAYMENT_METHOD;
-
-			$payment_method = get_option( $name, null );
-
-			$options = Pay_Util::select_options_grouped( $payment_methods, $payment_method );
-			// Double quotes are not working, se we replace them with an single quote
-			$options = str_replace( '"', '\'', $options );
-
-			$html .= '<tr>';
-			$html .= '	<td class="wpsc_CC_details">';
-			$html .= '		' . __( 'Payment Method', 'pronamic_ideal' );
-			$html .= '	</td>';
-			$html .= '	<td>';
-			$html .= sprintf( "<select name='%s' id='%s'>", $name, $name );
-			$html .= sprintf( '%s', $options );
-			$html .= sprintf( '</select>' );
-			$html .= '	</td>';
-			$html .= '</tr>';
-		}
 
 		return $html;
 	}
@@ -155,28 +146,13 @@ class Gateway extends wpsc_merchant {
 	 */
 	public static function admin_config_submit() {
 		// Config ID
-		$name = static::OPTION_CONFIG_ID;
+		$name = self::get_option_config_id();
 
 		if ( filter_has_var( INPUT_POST, $name ) ) {
 			$config_id = filter_input( INPUT_POST, $name, FILTER_SANITIZE_STRING );
 
 			update_option( $name, $config_id );
 		}
-
-		if ( null === static::OPTION_CONFIG_ID ) {
-			return true;
-		}
-
-		// Payment method
-		$name = Extension::OPTION_PRONAMIC_PAYMENT_METHOD;
-
-		if ( filter_has_var( INPUT_POST, $name ) ) {
-			$payment_method = filter_input( INPUT_POST, $name, FILTER_SANITIZE_STRING );
-
-			update_option( $name, $payment_method );
-		}
-
-		return true;
 	}
 
 	/**
@@ -185,7 +161,7 @@ class Gateway extends wpsc_merchant {
 	 * @return string
 	 */
 	public static function advanced_inputs() {
-		$config_id = get_option( static::OPTION_CONFIG_ID, null );
+		$config_id = self::get_config_id();
 
 		$gateway = Plugin::get_gateway( $config_id );
 
@@ -193,13 +169,11 @@ class Gateway extends wpsc_merchant {
 			return;
 		}
 
-		if ( null === static::PAYMENT_METHOD ) {
-			$payment_method = get_option( Extension::OPTION_PRONAMIC_PAYMENT_METHOD, null );
-		} else {
-			$payment_method = static::PAYMENT_METHOD;
-		}
+		$payment_method = static::PAYMENT_METHOD;
 
-		$gateway->set_payment_method( $payment_method );
+		if ( null !== $payment_method ) {
+			$gateway->set_payment_method( $payment_method );
+		}
 
 		return $gateway->get_input_html();
 	}

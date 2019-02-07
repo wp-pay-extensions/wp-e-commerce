@@ -21,11 +21,4 @@ class IDealGateway extends Gateway {
 	 * @var string $payment_method
 	 */
 	const PAYMENT_METHOD = PaymentMethods::IDEAL;
-
-	/**
-	 * Config ID option name.
-	 *
-	 * @var string
-	 */
-	const OPTION_CONFIG_ID = 'pronamic_pay_ideal_wpsc_config_id';
 }
