@@ -2,9 +2,18 @@
 
 namespace Pronamic\WordPress\Pay\Extensions\WPeCommerce\Gateways;
 
+use Pronamic\WordPress\Money\Money;
+use Pronamic\WordPress\Money\TaxedMoney;
 use Pronamic\WordPress\Pay\Extensions\WPeCommerce\Extension;
+use Pronamic\WordPress\Pay\Extensions\WPeCommerce\WPeCommerce;
+use Pronamic\WordPress\Pay\Address;
+use Pronamic\WordPress\Pay\Customer;
+use Pronamic\WordPress\Pay\ContactName;
 use Pronamic\WordPress\Pay\Admin\AdminModule;
 use Pronamic\WordPress\Pay\Core\PaymentMethods;
+use Pronamic\WordPress\Pay\Payments\Payment;
+use Pronamic\WordPress\Pay\Payments\PaymentLines;
+use Pronamic\WordPress\Pay\Payments\PaymentLineType;
 use Pronamic\WordPress\Pay\Plugin;
 use Pronamic\WordPress\Pay\Util as Pay_Util;
 use wpsc_merchant;
@@ -94,13 +103,97 @@ class Gateway extends wpsc_merchant {
 			return;
 		}
 
-		$data = new PaymentData( $this );
-
 		$payment_method = static::PAYMENT_METHOD;
 
 		if ( null !== $payment_method ) {
 			$gateway->set_payment_method( $payment_method );
 		}
+
+		// Payment.
+		$payment = new Payment();
+
+		// Customer.
+		$customer = new Customer();
+
+		$payment->set_customer( $customer );
+
+		if ( array_key_exists( 'email_address', $this->cart_data ) ) {
+			$customer->set_email( $this->cart_data['email_address'] );
+		}
+
+		// Billing address.
+		if ( array_key_exists( 'billing_address', $this->cart_data ) && is_array( $this->cart_data['billing_address'] ) ) {
+			$billing_address = new Address();
+
+			$payment->set_billing_address( $billing_address );
+
+			$data = $this->cart_data['billing_address'];
+			$data = array_filter( $data );
+
+			$contact_name = new ContactName();
+
+			if ( array_key_exists( 'first_name', $data ) ) {
+				$contact_name->set_first_name( $data['first_name'] );
+			}
+
+			if ( array_key_exists( 'last_name', $data ) ) {
+				$contact_name->set_last_name( $data['last_name'] );
+			}
+
+			$billing_address->set_name( $contact_name );
+
+			if ( array_key_exists( 'address', $data ) ) {
+				$billing_address->set_line_1( $data['address'] );
+			}
+
+			if ( array_key_exists( 'city', $data ) ) {
+				$billing_address->set_city( $data['city'] );
+			}
+
+			if ( array_key_exists( 'state', $data ) ) {
+				$billing_address->set_region( $data['state'] );
+			}
+
+			if ( array_key_exists( 'country', $data ) ) {
+				$billing_address->set_country_code( $data['country'] );
+			}
+
+			if ( array_key_exists( 'post_code', $data ) ) {
+				$billing_address->set_postal_code( $data['post_code'] );
+			}
+
+			$billing_address->set_email( $customer->get_email() );
+
+			if ( array_key_exists( 'phone', $data ) ) {
+				$billing_address->set_phone( $data['phone'] );
+			}
+		}
+
+		$payment->title = sprintf(
+			__( 'Payment for %s', 'pronamic_ideal' ),
+			sprintf(
+				__( 'WP eCommerce order %s', 'pronamic_ideal' ),
+				$this->purchase_id
+			)
+		);
+
+		$payment->config_id   = $config_id;
+		$payment->order_id    = $this->purchase_id;
+		$payment->description = sprintf(
+			__( 'WP eCommerce order %s', 'pronamic_ideal' ),
+			$this->purchase_id
+		);
+		$payment->source      = 'wp-e-commerce';
+		$payment->source_id   = $this->purchase_id;
+
+		if ( isset( $this->cart_data['email_address'] ) ) {
+			$payment->email = $this->cart_data['email_address'];
+		}
+
+		$payment->method = $payment_method;
+
+		var_dump( $this );
+		exit;
 
 		$payment = Plugin::start( $config_id, $gateway, $data, $payment_method );
 
