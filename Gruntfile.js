@@ -18,12 +18,12 @@ module.exports = function( grunt ) {
         // PHP Code Sniffer
         phpcs: {
             application: {
-                src: [
-                    '**/*.php',
-                    '!node_modules/**',
-                    '!vendor/**',
-                    '!wordpress/**',
-                    '!wp-content/**'
+				src: [
+					'**/*.php',
+					'!node_modules/**',
+					'!vendor/**',
+					'!wordpress/**',
+					'!wp-content/**'
                 ]
             },
             options: {
