@@ -112,6 +112,9 @@ class Gateway extends wpsc_merchant {
 		// Payment.
 		$payment = new Payment();
 
+		// Currency.
+		$currency = WPeCommerce::get_currency_from_cart_data( $this->cart_data );
+
 		// Customer.
 		$customer = new Customer();
 
@@ -122,53 +125,59 @@ class Gateway extends wpsc_merchant {
 		}
 
 		// Billing address.
-		if ( array_key_exists( 'billing_address', $this->cart_data ) && is_array( $this->cart_data['billing_address'] ) ) {
-			$billing_address = new Address();
+		$billing_address = WPeCommerce::get_address_from_cart_data( $this->cart_data, 'billing_address' );
 
+		if ( null !== $billing_address ) {
 			$payment->set_billing_address( $billing_address );
-
-			$data = $this->cart_data['billing_address'];
-			$data = array_filter( $data );
-
-			$contact_name = new ContactName();
-
-			if ( array_key_exists( 'first_name', $data ) ) {
-				$contact_name->set_first_name( $data['first_name'] );
-			}
-
-			if ( array_key_exists( 'last_name', $data ) ) {
-				$contact_name->set_last_name( $data['last_name'] );
-			}
-
-			$billing_address->set_name( $contact_name );
-
-			if ( array_key_exists( 'address', $data ) ) {
-				$billing_address->set_line_1( $data['address'] );
-			}
-
-			if ( array_key_exists( 'city', $data ) ) {
-				$billing_address->set_city( $data['city'] );
-			}
-
-			if ( array_key_exists( 'state', $data ) ) {
-				$billing_address->set_region( $data['state'] );
-			}
-
-			if ( array_key_exists( 'country', $data ) ) {
-				$billing_address->set_country_code( $data['country'] );
-			}
-
-			if ( array_key_exists( 'post_code', $data ) ) {
-				$billing_address->set_postal_code( $data['post_code'] );
-			}
 
 			$billing_address->set_email( $customer->get_email() );
 
-			if ( array_key_exists( 'phone', $data ) ) {
-				$billing_address->set_phone( $data['phone'] );
+			// Name.
+			$name = $customer->get_name();
+
+			if ( null === $name ) {
+				$customer->set_name( $billing_address->get_name() );
+			}
+
+			// Phone.
+			$phone = $customer->get_phone();
+
+			if ( null === $phone ) {
+				$customer->set_phone( $billing_address->get_phone() );
 			}
 		}
 
+		// Shipping address.
+		$shipping_address = WPeCommerce::get_address_from_cart_data( $this->cart_data, 'shipping_address' );
+
+		if ( null !== $shipping_address ) {
+			$payment->set_shipping_address( $shipping_address );
+
+			$shipping_address->set_email( $customer->get_email() );
+
+			// Name.
+			$name = $customer->get_name();
+
+			if ( null === $name ) {
+				$customer->set_name( $shipping_address->get_name() );
+			}
+
+			// Phone.
+			$phone = $customer->get_phone();
+
+			if ( null === $phone ) {
+				$customer->set_phone( $shipping_address->get_phone() );
+			}
+		}
+
+		// Payment lines.
+		$payment_lines = WPeCommerce::get_payment_lines_from_cart_items( $this->cart_items );
+
+		if ( null !== $payment_lines ) {
+			$payment->set_lines( $payment_lines );
+		}
+
+	 	// Other.
 		$payment->title = sprintf(
 			__( 'Payment for %s', 'pronamic_ideal' ),
 			sprintf(
@@ -193,6 +202,7 @@ class Gateway extends wpsc_merchant {
 		$payment->method = $payment_method;
 
 		var_dump( $this );
+		var_dump( $payment );
 		exit;
 
 		$payment = Plugin::start( $config_id, $gateway, $data, $payment_method );
