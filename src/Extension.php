@@ -39,6 +39,9 @@ class Extension {
 		// Add gateway to gateways
 		add_filter( 'wpsc_merchants_modules', array( __CLASS__, 'merchants_modules' ) );
 
+		// Save gateway options.
+		add_action( 'wpsc_submit_gateway_options', array( __CLASS__, 'submit_gateway_options' ) );
+
 		// Update payment status when returned from iDEAL
 		add_action( 'pronamic_payment_status_update_' . self::SLUG, array( __CLASS__, 'status_update' ), 10, 2 );
 
@@ -56,7 +59,7 @@ class Extension {
 	 *
 	 * @return array
 	 */
-	public static function merchants_modules( $gateways ) {
+	public static function merchants_modules( $gateways = array() ) {
 		global $nzshpcrt_gateways, $num, $wpsc_gateways, $gateway_checkout_form_fields;
 
 		$classes = array(
@@ -147,6 +150,23 @@ class Extension {
 		$gateway_checkout_form_fields['wpsc_merchant_pronamic_ideal'] = Gateways\IDealGateway::advanced_inputs();
 
 		return $gateways;
+	}
+
+	/**
+	 * Process gateway options submit.
+	 */
+	public static function submit_gateway_options() {
+		// Get gateways.
+		$gateways = self::merchants_modules();
+
+		foreach ( $gateways as $gateway ) {
+			if ( ! isset( $gateway['submit_function'] ) ) {
+				continue;
+			}
+
+			// Call admin config submit function for gateway.
+			call_user_func( $gateway['submit_function'] );
+		}
 	}
 
 	/**
