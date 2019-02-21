@@ -33,15 +33,15 @@ class Gateway extends wpsc_merchant {
 	/**
 	 * Payment method
 	 *
-	 * @var string $payment_method
+	 * @var null|string $payment_method
 	 */
 	const PAYMENT_METHOD = null;
 
 	/**
 	 * Construct and initialize an Pronamic merchant class
 	 *
-	 * @param null $purchase_id  Purchase ID.
-	 * @param bool $is_receiving Whether or not is receiving.
+	 * @param null|string $purchase_id  Purchase ID.
+	 * @param bool        $is_receiving Whether or not is receiving.
 	 */
 	public function __construct( $purchase_id = null, $is_receiving = false ) {
 		parent::__construct( $purchase_id, $is_receiving );
@@ -69,14 +69,14 @@ class Gateway extends wpsc_merchant {
 	/**
 	 * Get config ID.
 	 *
-	 * @return string
+	 * @return int
 	 */
 	private static function get_config_id() {
 		$name = self::get_option_config_id();
 
 		$config_id = get_option( $name, null );
 
-		return $config_id;
+		return (int) $config_id;
 	}
 
 	/**
