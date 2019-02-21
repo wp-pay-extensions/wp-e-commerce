@@ -1,21 +1,22 @@
 <?php
+/**
+ * Gateway.
+ *
+ * @author    Pronamic <info@pronamic.eu>
+ * @copyright 2005-2019 Pronamic
+ * @license   GPL-3.0-or-later
+ * @package   Pronamic\WordPress\Pay\Extensions\WPeCommerce
+ */
 
 namespace Pronamic\WordPress\Pay\Extensions\WPeCommerce\Gateways;
 
-use Pronamic\WordPress\Money\Money;
 use Pronamic\WordPress\Money\TaxedMoney;
-use Pronamic\WordPress\Pay\Extensions\WPeCommerce\Extension;
-use Pronamic\WordPress\Pay\Extensions\WPeCommerce\WPeCommerce;
-use Pronamic\WordPress\Pay\Address;
-use Pronamic\WordPress\Pay\Customer;
-use Pronamic\WordPress\Pay\ContactName;
 use Pronamic\WordPress\Pay\Admin\AdminModule;
 use Pronamic\WordPress\Pay\Core\PaymentMethods;
+use Pronamic\WordPress\Pay\Customer;
+use Pronamic\WordPress\Pay\Extensions\WPeCommerce\WPeCommerce;
 use Pronamic\WordPress\Pay\Payments\Payment;
-use Pronamic\WordPress\Pay\Payments\PaymentLines;
-use Pronamic\WordPress\Pay\Payments\PaymentLineType;
 use Pronamic\WordPress\Pay\Plugin;
-use Pronamic\WordPress\Pay\Util as Pay_Util;
 use wpsc_merchant;
 
 /**
@@ -39,8 +40,8 @@ class Gateway extends wpsc_merchant {
 	/**
 	 * Construct and initialize an Pronamic merchant class
 	 *
-	 * @param null $purchase_id
-	 * @param bool $is_receiving
+	 * @param null $purchase_id  Purchase ID.
+	 * @param bool $is_receiving Whether or not is receiving.
 	 */
 	public function __construct( $purchase_id = null, $is_receiving = false ) {
 		parent::__construct( $purchase_id, $is_receiving );
@@ -79,22 +80,19 @@ class Gateway extends wpsc_merchant {
 	}
 
 	/**
-	 * Construct value array specific data array
-	 */
-	public function construct_value_array() {
-		// No specific data for this merchant
-		return array();
-	}
-
-	/**
 	 * Submit to gateway
 	 */
 	public function submit() {
+		global $wpsc_cart;
+
 		$config_id = self::get_config_id();
 
-		// Set process to 'order_received' (2)
-		// @link https://plugins.trac.wordpress.org/browser/wp-e-commerce/tags/3.8.7.6.2/wpsc-includes/merchant.class.php#L301
-		// @link https://plugins.trac.wordpress.org/browser/wp-e-commerce/tags/3.8.7.6.2/wpsc-core/wpsc-functions.php#L115
+		/*
+		 * Set purchase processed to 'order_received' (2).
+		 *
+		 * @link https://plugins.trac.wordpress.org/browser/wp-e-commerce/tags/3.8.7.6.2/wpsc-includes/merchant.class.php#L301
+		 * @link https://plugins.trac.wordpress.org/browser/wp-e-commerce/tags/3.8.7.6.2/wpsc-core/wpsc-functions.php#L115
+		 */
 		$this->set_purchase_processed_by_purchid( WPeCommerce::PURCHASE_STATUS_ORDER_RECEIVED );
 
 		$gateway = Plugin::get_gateway( $config_id );
@@ -111,9 +109,6 @@ class Gateway extends wpsc_merchant {
 
 		// Payment.
 		$payment = new Payment();
-
-		// Currency.
-		$currency = WPeCommerce::get_currency_from_cart_data( $this->cart_data );
 
 		// Customer.
 		$customer = new Customer();
@@ -177,10 +172,12 @@ class Gateway extends wpsc_merchant {
 			$payment->set_lines( $payment_lines );
 		}
 
-	 	// Other.
+		// Other.
 		$payment->title = sprintf(
+			/* translators: %s: payment data title */
 			__( 'Payment for %s', 'pronamic_ideal' ),
 			sprintf(
+				/* translators: %s: order id */
 				__( 'WP eCommerce order %s', 'pronamic_ideal' ),
 				$this->purchase_id
 			)
@@ -189,11 +186,12 @@ class Gateway extends wpsc_merchant {
 		$payment->config_id   = $config_id;
 		$payment->order_id    = $this->purchase_id;
 		$payment->description = sprintf(
-			__( 'WP eCommerce order %s', 'pronamic_ideal' ),
+			/* translators: %s: purchase id */
+			__( 'Order %s', 'pronamic_ideal' ),
 			$this->purchase_id
 		);
-		$payment->source      = 'wp-e-commerce';
-		$payment->source_id   = $this->purchase_id;
+		$payment->source    = 'wp-e-commerce';
+		$payment->source_id = $this->purchase_id;
 
 		if ( isset( $this->cart_data['email_address'] ) ) {
 			$payment->email = $this->cart_data['email_address'];
@@ -214,9 +212,12 @@ class Gateway extends wpsc_merchant {
 
 		if ( is_wp_error( $error ) ) {
 			Plugin::render_errors( $error );
-		} else {
-			$gateway->redirect( $payment );
+
+			return;
 		}
+
+		// Redirect.
+		$gateway->redirect( $payment );
 	}
 
 	/**
@@ -245,23 +246,27 @@ class Gateway extends wpsc_merchant {
 	}
 
 	/**
-	 * Admin config submit
+	 * Admin config submit.
+	 *
+	 * @return void
 	 */
 	public static function admin_config_submit() {
-		// Config ID
+		// Config ID.
 		$name = self::get_option_config_id();
 
-		if ( filter_has_var( INPUT_POST, $name ) ) {
-			$config_id = filter_input( INPUT_POST, $name, FILTER_SANITIZE_STRING );
-
-			update_option( $name, $config_id );
+		if ( ! filter_has_var( INPUT_POST, $name ) ) {
+			return;
 		}
+
+		$config_id = filter_input( INPUT_POST, $name, FILTER_SANITIZE_STRING );
+
+		update_option( $name, $config_id );
 	}
 
 	/**
 	 * Advanced inputs
 	 *
-	 * @return string
+	 * @return null|string
 	 */
 	public static function advanced_inputs() {
 		$config_id = self::get_config_id();
@@ -269,7 +274,7 @@ class Gateway extends wpsc_merchant {
 		$gateway = Plugin::get_gateway( $config_id );
 
 		if ( ! $gateway ) {
-			return;
+			return null;
 		}
 
 		$payment_method = static::PAYMENT_METHOD;

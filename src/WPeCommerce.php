@@ -1,11 +1,17 @@
 <?php
+/**
+ * WP eCommerce.
+ *
+ * @author    Pronamic <info@pronamic.eu>
+ * @copyright 2005-2019 Pronamic
+ * @license   GPL-3.0-or-later
+ * @package   Pronamic\WordPress\Pay\Extensions\WPeCommerce
+ */
 
 namespace Pronamic\WordPress\Pay\Extensions\WPeCommerce;
 
-use Pronamic\WordPress\Money\Money;
 use Pronamic\WordPress\Money\TaxedMoney;
 use Pronamic\WordPress\Pay\Address;
-use Pronamic\WordPress\Pay\Customer;
 use Pronamic\WordPress\Pay\ContactName;
 use Pronamic\WordPress\Pay\Payments\PaymentLines;
 use Pronamic\WordPress\Pay\Payments\PaymentLineType;
@@ -87,9 +93,9 @@ class WPeCommerce {
 	 * @param array $cart_data Cart data.
 	 * @return string|null
 	 */
-	public function get_currency_from_cart_data( $cart_data ) {
+	public static function get_currency_from_cart_data( $cart_data ) {
 		if ( ! array_key_exists( 'store_currency', $cart_data ) ) {
-			return;
+			return null;
 		}
 
 		return $cart_data['store_currency'];
@@ -159,7 +165,9 @@ class WPeCommerce {
 	/**
 	 * Get payment lines from cart data.
 	 *
+	 * @param array $items     Cart items.
 	 * @param array $cart_data Cart data.
+	 *
 	 * @return PaymentLines|null
 	 */
 	public static function get_payment_lines_from_cart_items( $items ) {
@@ -182,16 +190,19 @@ class WPeCommerce {
 			$unit_price_value = null;
 			$unit_tax_value   = null;
 
-			if ( array_key_exists( 'product_id', $item ) ) {
-				$line->set_id( $item['product_id'] );
+			// ID.
+			if ( isset( $item->product_id ) ) {
+				$line->set_id( $item->product_id );
 			}
 
-			if ( array_key_exists( 'name', $item ) ) {
-				$line->set_name( $item['name'] );
+			// Name.
+			if ( isset( $item->product_name ) ) {
+				$line->set_name( $item->product_name );
 			}
 
-			if ( array_key_exists( 'quantity', $item ) ) {
-				$quantity = intval( $item['quantity'] );
+			// Quantity.
+			if ( isset( $item->quantity ) ) {
+				$quantity = intval( $item->quantity );
 			}
 
 			$line->set_quantity( $quantity );

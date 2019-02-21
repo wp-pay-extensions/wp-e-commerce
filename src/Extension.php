@@ -1,9 +1,17 @@
 <?php
+/**
+ * Extension.
+ *
+ * @author    Pronamic <info@pronamic.eu>
+ * @copyright 2005-2019 Pronamic
+ * @license   GPL-3.0-or-later
+ * @package   Pronamic\WordPress\Pay\Extensions\WPeCommerce
+ */
 
 namespace Pronamic\WordPress\Pay\Extensions\WPeCommerce;
 
-use Pronamic\WordPress\Pay\Core\PaymentMethods;
 use Pronamic\WordPress\Pay\Core\Statuses;
+use Pronamic\WordPress\Pay\Extensions\WPeCommerce\Gateways\Gateway;
 use Pronamic\WordPress\Pay\Payments\Payment;
 use Pronamic\WordPress\Pay\Plugin;
 
@@ -36,16 +44,16 @@ class Extension {
 	 * Bootstrap
 	 */
 	public static function bootstrap() {
-		// Add gateway to gateways
+		// Add gateways.
 		add_filter( 'wpsc_merchants_modules', array( __CLASS__, 'merchants_modules' ) );
 
 		// Save gateway options.
 		add_action( 'wpsc_submit_gateway_options', array( __CLASS__, 'submit_gateway_options' ) );
 
-		// Update payment status when returned from iDEAL
+		// Update payment status.
 		add_action( 'pronamic_payment_status_update_' . self::SLUG, array( __CLASS__, 'status_update' ), 10, 2 );
 
-		// Filters
+		// Filters.
 		add_filter( 'pronamic_payment_redirect_url_' . self::SLUG, array( __CLASS__, 'redirect_url' ), 10, 2 );
 		add_filter( 'pronamic_payment_source_text_' . self::SLUG, array( __CLASS__, 'source_text' ), 10, 2 );
 		add_filter( 'pronamic_payment_source_description_' . self::SLUG, array( __CLASS__, 'source_description' ), 10, 2 );
@@ -55,7 +63,7 @@ class Extension {
 	/**
 	 * Merchants modules
 	 *
-	 * @param array $gateways
+	 * @param array $gateways Gateways.
 	 *
 	 * @return array
 	 */
@@ -172,8 +180,8 @@ class Extension {
 	/**
 	 * Update lead status of the specified payment
 	 *
-	 * @param Payment $payment
-	 * @param bool    $can_redirect
+	 * @param Payment $payment      Payment.
+	 * @param bool    $can_redirect Whether or not to redirect.
 	 */
 	public static function status_update( Payment $payment, $can_redirect = false ) {
 		$merchant = new Gateway( $payment->get_source_id() );
@@ -190,7 +198,6 @@ class Extension {
 
 				break;
 			case Statuses::EXPIRED:
-				break;
 			case Statuses::FAILURE:
 				break;
 			case Statuses::SUCCESS:
@@ -209,7 +216,6 @@ class Extension {
 
 				break;
 			case Statuses::OPEN:
-				break;
 			default:
 				break;
 		}
@@ -224,8 +230,8 @@ class Extension {
 	/**
 	 * Payment redirect URL filter.
 	 *
-	 * @param string  $url
-	 * @param Payment $payment
+	 * @param string  $url     Redirect URL.
+	 * @param Payment $payment Payment.
 	 *
 	 * @return string
 	 */
@@ -240,11 +246,9 @@ class Extension {
 			case Statuses::CANCELLED:
 				return $data->get_cancel_url();
 			case Statuses::EXPIRED:
-				break;
 			case Statuses::FAILURE:
 				break;
 			case Statuses::SUCCESS:
-				return $data->get_success_url();
 			case Statuses::OPEN:
 			default:
 				break;
@@ -256,8 +260,8 @@ class Extension {
 	/**
 	 * Source text.
 	 *
-	 * @param string  $text
-	 * @param Payment $payment
+	 * @param string  $text    Source text.
+	 * @param Payment $payment Payment.
 	 *
 	 * @return string
 	 */
@@ -283,8 +287,8 @@ class Extension {
 	/**
 	 * Source description.
 	 *
-	 * @param string  $description
-	 * @param Payment $payment
+	 * @param string  $description Source description.
+	 * @param Payment $payment     Payment.
 	 *
 	 * @return string
 	 */
@@ -295,8 +299,8 @@ class Extension {
 	/**
 	 * Source URL.
 	 *
-	 * @param string  $url
-	 * @param Payment $payment
+	 * @param string  $url     Source URL.
+	 * @param Payment $payment Payment.
 	 *
 	 * @return string
 	 */
