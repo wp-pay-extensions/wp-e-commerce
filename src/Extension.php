@@ -186,44 +186,33 @@ class Extension {
 	public static function status_update( Payment $payment, $can_redirect = false ) {
 		$merchant = new Gateway( $payment->get_source_id() );
 
-		$data = new PaymentData( $merchant );
-
-		$url = $data->get_normal_return_url();
-
 		switch ( $payment->status ) {
 			case Statuses::CANCELLED:
 				$merchant->set_purchase_processed_by_purchid( WPeCommerce::PURCHASE_STATUS_INCOMPLETE_SALE );
 
-				$url = $data->get_cancel_url();
-
 				break;
+
 			case Statuses::EXPIRED:
 			case Statuses::FAILURE:
 				break;
+
 			case Statuses::SUCCESS:
 				/*
 				 * Transactions results
 				 *
 				 * @link https://github.com/wp-e-commerce/WP-e-Commerce/blob/v3.8.9.5/wpsc-merchants/paypal-pro.merchant.php#L303
 				 */
-				$session_id = get_post_meta( $payment->get_id(), '_pronamic_payment_wpsc_session_id', true );
+				$session_id = $payment->get_meta( 'wpsc_session_id' );
 
 				transaction_results( $session_id );
 
 				$merchant->set_purchase_processed_by_purchid( WPeCommerce::PURCHASE_STATUS_ACCEPTED_PAYMENT );
 
-				$url = $data->get_success_url();
-
 				break;
+
 			case Statuses::OPEN:
 			default:
 				break;
-		}
-
-		if ( $can_redirect ) {
-			wp_redirect( $url );
-
-			exit;
 		}
 	}
 
@@ -236,23 +225,48 @@ class Extension {
 	 * @return string
 	 */
 	public static function redirect_url( $url, Payment $payment ) {
-		$merchant = new Gateway( $payment->get_source_id() );
-
-		$data = new PaymentData( $merchant );
-
-		$url = $data->get_normal_return_url();
+		// URL arguments.
+		$args = array(
+			'sessionid' => $payment->get_meta( 'wpsc_session_id' ),
+			'gateway'   => 'wpsc_merchant_pronamic',
+		);
 
 		switch ( $payment->status ) {
 			case Statuses::CANCELLED:
-				return $data->get_cancel_url();
+				/*
+				 * Remove 'sessionid' paramater from the transaction URL, so customers
+				 * will get a message 'Sorry your transaction was not accepted.'.
+				 *
+				 * @link https://plugins.trac.wordpress.org/browser/wp-e-commerce/tags/3.8.8.3/wpsc-theme/functions/wpsc-transaction_results_functions.php#L94
+				 */
+				unset( $args['sessionid'] );
+
+				$args['return'] = 'cancel';
+
+				break;
 			case Statuses::EXPIRED:
 			case Statuses::FAILURE:
+				/*
+				 * Remove 'sessionid' paramater from the transaction URL, so customers
+				 * will get a message 'Sorry your transaction was not accepted.'.
+				 *
+				 * @link https://plugins.trac.wordpress.org/browser/wp-e-commerce/tags/3.8.8.3/wpsc-theme/functions/wpsc-transaction_results_functions.php#L94
+				 */
+				unset( $args['sessionid'] );
+
+				$args['return'] = 'error';
+
 				break;
 			case Statuses::SUCCESS:
 			case Statuses::OPEN:
 			default:
 				break;
 		}
+
+		$url = add_query_arg(
+			$args,
+			get_option( 'transact_url' )
+		);
 
 		return $url;
 	}
@@ -307,8 +321,9 @@ class Extension {
 	public static function source_url( $url, Payment $payment ) {
 		$url = add_query_arg(
 			array(
-				'page'           => 'wpsc-sales-logs',
-				'purchaselog_id' => $payment->get_source_id(),
+				'page' => 'wpsc-purchase-logs',
+				'c'    => 'item_details',
+				'id'   => $payment->get_source_id(),
 			),
 			admin_url( 'index.php' )
 		);
