@@ -14,7 +14,7 @@ use Pronamic\WordPress\Money\TaxedMoney;
 use Pronamic\WordPress\Pay\Address;
 use Pronamic\WordPress\Pay\ContactName;
 use Pronamic\WordPress\Pay\Payments\PaymentLines;
-use Pronamic\WordPress\Pay\Payments\PaymentLineType;
+use wpec_taxes_controller;
 
 /**
  * Title: WP e-Commerce
@@ -170,14 +170,18 @@ class WPeCommerce {
 	 *
 	 * @return PaymentLines|null
 	 */
-	public static function get_payment_lines_from_cart_items( $items ) {
+	public static function get_payment_lines_from_cart_items( $items, $cart_data ) {
 		if ( ! is_array( $items ) ) {
 			return null;
 		}
 
-		$currency = WPeCommerce::get_currency_from_cart_data( $cart_data );
+		$currency = self::get_currency_from_cart_data( $cart_data );
 
 		$lines = new PaymentLines();
+
+		if ( class_exists( '\wpec_taxes_controller' ) ) {
+			$taxes_controller = new wpec_taxes_controller();
+		}
 
 		foreach ( $items as $item ) {
 			$line = $lines->new_line();
@@ -207,14 +211,29 @@ class WPeCommerce {
 
 			$line->set_quantity( $quantity );
 
-			if ( array_key_exists( 'tax', $item ) ) {
-				$total_tax_value = $item['tax'];
+			// Tax.
+			if ( isset( $taxes_controller ) ) {
+				// Get included tax.
+				$tax = $taxes_controller->wpec_taxes_calculate_included_tax( $item );
+
+				if ( ! $taxes_controller->wpec_taxes_isincluded() ) {
+					// Get excluded tax.
+					$tax = $taxes_controller->wpec_taxes_calculate_excluded_tax( $item, $tax );
+				}
+
+				$total_tax_value = $tax['tax'];
 				$unit_tax_value  = $total_tax_value / $quantity;
 			}
 
-			if ( array_key_exists( 'price', $item ) ) {
-				$unit_price_value = $item['price'];
-				$total_price_value = $unit_price_value * $quantity;
+			// Price.
+			if ( isset( $item->unit_price, $item->total_price ) ) {
+				$total_price_value = $item->total_price;
+				$unit_price_value  = $item->unit_price;
+
+				if ( isset( $taxes_controller, $total_tax_value, $unit_tax_value ) && ! $taxes_controller->wpec_taxes_isincluded() ) {
+					$total_price_value += $total_tax_value;
+					$unit_price_value  += $unit_tax_value;
+				}
 
 				$line->set_unit_price( new TaxedMoney( $unit_price_value, $currency, $unit_tax_value ) );
 				$line->set_total_amount( new TaxedMoney( $total_price_value, $currency, $total_tax_value ) );
@@ -222,5 +241,30 @@ class WPeCommerce {
 		}
 
 		return $lines;
+	}
+
+	/**
+	 * Get total tax amount for purchase.
+	 *
+	 * @return float
+	 */
+	public static function get_total_tax() {
+		$return = 0;
+
+		if ( ! class_exists( '\wpec_taxes_controller' ) ) {
+			return $return;
+		}
+
+		$taxes_controller = new wpec_taxes_controller();
+
+		if ( is_callable( array( $taxes_controller, 'wpec_taxes_calculate_total' ) ) ) {
+			$total_taxes = $taxes_controller->wpec_taxes_calculate_total();
+
+			if ( is_array( $total_taxes ) && isset( $total_taxes['total'] ) ) {
+				$return = $total_taxes['total'];
+			}
+		}
+
+		return $return;
 	}
 }

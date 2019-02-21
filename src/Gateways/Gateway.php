@@ -115,7 +115,7 @@ class Gateway extends wpsc_merchant {
 
 		$payment->set_customer( $customer );
 
-		if ( array_key_exists( 'email_address', $this->cart_data ) ) {
+		if ( isset( $this->cart_data['email_address'] ) ) {
 			$customer->set_email( $this->cart_data['email_address'] );
 		}
 
@@ -166,7 +166,7 @@ class Gateway extends wpsc_merchant {
 		}
 
 		// Payment lines.
-		$payment_lines = WPeCommerce::get_payment_lines_from_cart_items( $this->cart_items );
+		$payment_lines = WPeCommerce::get_payment_lines_from_cart_items( $wpsc_cart->cart_items, $this->cart_data );
 
 		if ( null !== $payment_lines ) {
 			$payment->set_lines( $payment_lines );
@@ -199,15 +199,28 @@ class Gateway extends wpsc_merchant {
 
 		$payment->method = $payment_method;
 
-		var_dump( $this );
-		var_dump( $payment );
-		exit;
+		// Set total amount.
+		$payment->set_total_amount(
+			new TaxedMoney(
+				$this->cart_data['total_price'],
+				WPeCommerce::get_currency_from_cart_data( $this->cart_data ),
+				WPeCommerce::get_total_tax()
+			)
+		);
 
-		$payment = Plugin::start( $config_id, $gateway, $data, $payment_method );
+		// Start payment.
+		$payment = Plugin::start_payment( $payment );
 
-		update_post_meta( $payment->get_id(), '_pronamic_payment_wpsc_purchase_id', $data->get_purchase_id() );
-		update_post_meta( $payment->get_id(), '_pronamic_payment_wpsc_session_id', $data->get_session_id() );
+		// Meta.
+		if ( isset( $this->purchase_id ) ) {
+			$payment->set_meta( 'wpsc_purchase_id', $this->purchase_id );
+		}
 
+		if ( isset( $this->cart_data['session_id'] ) ) {
+			$payment->set_meta( 'wpsc_session_id', $this->cart_data['session_id'] );
+		}
+
+		// Handle errors.
 		$error = $gateway->get_error();
 
 		if ( is_wp_error( $error ) ) {
