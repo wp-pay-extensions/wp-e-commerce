@@ -37,7 +37,31 @@
 		"php": "^5.3",
 		"wp-pay/core": "^2.1"
 	},
+	"repositories": [
+		{
+			"type": "package",
+			"package": {
+				"name": "wp-e-commerce/WP-e-Commerce",
+				"version": "3.14.0",
+				"dist": {
+					"url": "https://github.com/wp-e-commerce/WP-e-Commerce/archive/3.14.0.zip",
+					"type": "zip"
+				},
+				"source": {
+					"url": "https://github.com/wp-e-commerce/WP-e-Commerce",
+					"type": "github",
+					"reference": "tags/3.14.0"
+				},
+				"autoload": {
+					"classmap": [
+						"."
+					]
+				}
+			}
+		}
+	],
 	"require-dev": {
+		"wp-e-commerce/WP-e-Commerce": "3.14.0",
 		"dealerdirect/phpcodesniffer-composer-installer": "^0.5",
 		"php-coveralls/php-coveralls": "^1.1",
 		"phpcompatibility/php-compatibility": "^9.1",

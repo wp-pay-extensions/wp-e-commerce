@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9145fe9bc296cde0e4158b9830e32121",
+    "content-hash": "a760b45cc14a1a13cb4c07b58ea0c164",
     "packages": [
         {
             "name": "composer/installers",
@@ -1412,7 +1412,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/WordPress/WordPress/zipball/5.0.3",
-                "reference": "5.0.3",
+                "reference": null,
                 "shasum": null
             },
             "require": {
@@ -2366,6 +2366,27 @@
                 "wordpress"
             ],
             "time": "2018-12-18T09:43:51+00:00"
+        },
+        {
+            "name": "wp-e-commerce/WP-e-Commerce",
+            "version": "3.14.0",
+            "source": {
+                "type": "github",
+                "url": "https://github.com/wp-e-commerce/WP-e-Commerce",
+                "reference": "tags/3.14.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/wp-e-commerce/WP-e-Commerce/archive/3.14.0.zip",
+                "reference": null,
+                "shasum": null
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "."
+                ]
+            }
         },
         {
             "name": "wp-phpunit/wp-phpunit",
