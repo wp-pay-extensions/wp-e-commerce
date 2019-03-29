@@ -61,7 +61,7 @@
 		}
 	],
 	"require-dev": {
-		"wp-e-commerce/WP-e-Commerce": "3.14.0",
+		"wp-e-commerce/WP-e-Commerce": "^3.14",
 		"dealerdirect/phpcodesniffer-composer-installer": "^0.5",
 		"php-coveralls/php-coveralls": "^1.1",
 		"phpcompatibility/php-compatibility": "^9.1",
