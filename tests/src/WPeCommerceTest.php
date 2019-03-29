@@ -1,13 +1,21 @@
 <?php
+/**
+ * Test WP eCommerce.
+ *
+ * @author    Pronamic <info@pronamic.eu>
+ * @copyright 2005-2019 Pronamic
+ * @license   GPL-3.0-or-later
+ * @package   Pronamic\WordPress\Pay\Extensions\WPeCommerce
+ */
 
 namespace Pronamic\WordPress\Pay\Extensions\WPeCommerce;
 
 use PHPUnit_Framework_TestCase;
 
 /**
- * Title: WordPress pay AppThemes test
+ * Title: WordPress pay WP eCommerce test
  * Description:
- * Copyright: Copyright (c) 2005 - 2018
+ * Copyright: 2005-2019 Pronamic
  * Company: Pronamic
  *
  * @author  Reüel van der Steege

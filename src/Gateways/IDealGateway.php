@@ -1,13 +1,21 @@
 <?php
+/**
+ * IDEAL Gateway.
+ *
+ * @author    Pronamic <info@pronamic.eu>
+ * @copyright 2005-2019 Pronamic
+ * @license   GPL-3.0-or-later
+ * @package   Pronamic\WordPress\Pay\Extensions\WPeCommerce
+ */
 
-namespace Pronamic\WordPress\Pay\Extensions\WPeCommerce;
+namespace Pronamic\WordPress\Pay\Extensions\WPeCommerce\Gateways;
 
 use Pronamic\WordPress\Pay\Core\PaymentMethods;
 
 /**
  * Title: WP e-Commerce iDEAL gateway
  * Description:
- * Copyright: Copyright (c) 2005 - 2018
+ * Copyright: 2005-2019 Pronamic
  * Company: Pronamic
  *
  * @author  Remco Tolsma
@@ -21,11 +29,4 @@ class IDealGateway extends Gateway {
 	 * @var string $payment_method
 	 */
 	const PAYMENT_METHOD = PaymentMethods::IDEAL;
-
-	/**
-	 * Config ID option name.
-	 *
-	 * @var string
-	 */
-	const OPTION_CONFIG_ID = 'pronamic_pay_ideal_wpsc_config_id';
 }
