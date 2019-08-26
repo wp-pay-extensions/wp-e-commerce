@@ -29,13 +29,11 @@
 		}
 	},
 	"config": {
-		"platform": {
-			"php": "5.3.3"
-		}
+		"sort-packages": true
 	},
 	"require": {
-		"php": "^5.3",
-		"wp-pay/core": "^2.1"
+		"php": ">=5.6.20",
+		"wp-pay/core": "^2.2"
 	},
 	"repositories": [
 		{
@@ -44,11 +42,11 @@
 				"name": "wp-e-commerce/WP-e-Commerce",
 				"version": "3.14.0",
 				"dist": {
-					"url": "https://github.com/wp-e-commerce/WP-e-Commerce/archive/3.14.0.zip",
+					"url": "https://github.com/wp-e-commerce/wp-e-commerce/archive/3.14.0.zip",
 					"type": "zip"
 				},
 				"source": {
-					"url": "https://github.com/wp-e-commerce/WP-e-Commerce",
+					"url": "https://github.com/wp-e-commerce/wp-e-commerce",
 					"type": "github",
 					"reference": "tags/3.14.0"
 				},
@@ -61,17 +59,17 @@
 		}
 	],
 	"require-dev": {
-		"wp-e-commerce/WP-e-Commerce": "^3.14",
+		"wp-e-commerce/wp-e-commerce": "^3.14",
 		"dealerdirect/phpcodesniffer-composer-installer": "^0.5",
-		"php-coveralls/php-coveralls": "^1.1",
-		"phpcompatibility/php-compatibility": "^9.1",
+		"php-coveralls/php-coveralls": "^2.1",
+		"phpcompatibility/php-compatibility": "^9.2",
 		"phpcompatibility/phpcompatibility-wp": "^2.0",
-		"phpmd/phpmd": "^2.4",
-		"phpunit/phpunit": "^4.8",
-		"roots/wordpress": "^5.0",
-		"squizlabs/php_codesniffer": "^2.9",
-		"wp-coding-standards/wpcs": "^1.2",
-		"wp-phpunit/wp-phpunit": "^5.0"
+		"phpmd/phpmd": "^2.7",
+		"phpunit/phpunit": "^5.7 || ^6.0",
+		"roots/wordpress": "^5.2",
+		"squizlabs/php_codesniffer": "^3.4",
+		"wp-coding-standards/wpcs": "^2.1",
+		"wp-phpunit/wp-phpunit": "^5.2"
 	},
 	"scripts": {
 		"coveralls": "vendor/bin/coveralls -v",
