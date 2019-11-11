@@ -215,7 +215,7 @@ class Gateway extends wpsc_merchant {
 			// @todo Build payment inside try/catch block.
 
 			$payment = Plugin::start_payment( $payment );
-		} catch ( \Pronamic\WordPress\Pay\PayException $e ) {
+		} catch ( \Exception $e ) {
 			$error = $e;
 		}
 
@@ -228,8 +228,8 @@ class Gateway extends wpsc_merchant {
 			$payment->set_meta( 'wpsc_session_id', $this->cart_data['session_id'] );
 		}
 
-		if ( $error instanceof \Pronamic\WordPress\Pay\PayException ) {
-			$e->render();
+		if ( $error instanceof \Exception ) {
+			Plugin::render_exception( $error );
 
 			return;
 		}
