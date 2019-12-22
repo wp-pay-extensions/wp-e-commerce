@@ -10,7 +10,7 @@
 
 namespace Pronamic\WordPress\Pay\Extensions\WPeCommerce;
 
-use Pronamic\WordPress\Pay\Core\Statuses;
+use Pronamic\WordPress\Pay\Payments\PaymentStatus;
 use Pronamic\WordPress\Pay\Extensions\WPeCommerce\Gateways\Gateway;
 use Pronamic\WordPress\Pay\Payments\Payment;
 use Pronamic\WordPress\Pay\Plugin;
@@ -22,7 +22,7 @@ use Pronamic\WordPress\Pay\Plugin;
  * Company: Pronamic
  *
  * @author  Remco Tolsma
- * @version 2.0.2
+ * @version 2.0.4
  * @since   1.0.0
  */
 class Extension {
@@ -187,16 +187,16 @@ class Extension {
 		$merchant = new Gateway( $payment->get_source_id() );
 
 		switch ( $payment->status ) {
-			case Statuses::CANCELLED:
+			case PaymentStatus::CANCELLED:
 				$merchant->set_purchase_processed_by_purchid( WPeCommerce::PURCHASE_STATUS_INCOMPLETE_SALE );
 
 				break;
 
-			case Statuses::EXPIRED:
-			case Statuses::FAILURE:
+			case PaymentStatus::EXPIRED:
+			case PaymentStatus::FAILURE:
 				break;
 
-			case Statuses::SUCCESS:
+			case PaymentStatus::SUCCESS:
 				/*
 				 * Transactions results
 				 *
@@ -210,7 +210,7 @@ class Extension {
 
 				break;
 
-			case Statuses::OPEN:
+			case PaymentStatus::OPEN:
 			default:
 				break;
 		}
@@ -232,7 +232,7 @@ class Extension {
 		);
 
 		switch ( $payment->status ) {
-			case Statuses::CANCELLED:
+			case PaymentStatus::CANCELLED:
 				/*
 				 * Remove 'sessionid' paramater from the transaction URL, so customers
 				 * will get a message 'Sorry your transaction was not accepted.'.
@@ -244,8 +244,8 @@ class Extension {
 				$args['return'] = 'cancel';
 
 				break;
-			case Statuses::EXPIRED:
-			case Statuses::FAILURE:
+			case PaymentStatus::EXPIRED:
+			case PaymentStatus::FAILURE:
 				/*
 				 * Remove 'sessionid' paramater from the transaction URL, so customers
 				 * will get a message 'Sorry your transaction was not accepted.'.
@@ -257,8 +257,8 @@ class Extension {
 				$args['return'] = 'error';
 
 				break;
-			case Statuses::SUCCESS:
-			case Statuses::OPEN:
+			case PaymentStatus::SUCCESS:
+			case PaymentStatus::OPEN:
 			default:
 				break;
 		}

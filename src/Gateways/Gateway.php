@@ -26,7 +26,7 @@ use wpsc_merchant;
  * Company: Pronamic
  *
  * @author  Remco Tolsma
- * @version 2.0.2
+ * @version 2.0.4
  * @since   1.0.0
  */
 class Gateway extends wpsc_merchant {
@@ -209,7 +209,15 @@ class Gateway extends wpsc_merchant {
 		);
 
 		// Start payment.
-		$payment = Plugin::start_payment( $payment );
+		$error = null;
+
+		try {
+			// @todo Build payment inside try/catch block.
+
+			$payment = Plugin::start_payment( $payment );
+		} catch ( \Exception $e ) {
+			$error = $e;
+		}
 
 		// Meta.
 		if ( isset( $this->purchase_id ) ) {
@@ -220,11 +228,8 @@ class Gateway extends wpsc_merchant {
 			$payment->set_meta( 'wpsc_session_id', $this->cart_data['session_id'] );
 		}
 
-		// Handle errors.
-		$error = $gateway->get_error();
-
-		if ( is_wp_error( $error ) ) {
-			Plugin::render_errors( $error );
+		if ( $error instanceof \Exception ) {
+			Plugin::render_exception( $error );
 
 			return;
 		}
