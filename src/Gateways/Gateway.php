@@ -26,7 +26,7 @@ use wpsc_merchant;
  * Company: Pronamic
  *
  * @author  Remco Tolsma
- * @version 2.0.2
+ * @version 2.0.4
  * @since   1.0.0
  */
 class Gateway extends wpsc_merchant {
