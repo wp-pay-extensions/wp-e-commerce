@@ -41,6 +41,17 @@ class Extension extends \Pronamic\WordPress\Pay\AbstractPluginIntegration {
 	const OPTION_PRONAMIC_PAYMENT_METHOD = 'pronamic_pay_pronamic_wpsc_payment_method';
 
 	/**
+	 * Construct WP eCommerce extension.
+	 *
+	 * @param array $args Arguments.
+	 */
+	public function __construct( $args = array() ) {
+		parent::__construct( $args );
+
+		self::bootstrap();
+	}
+
+	/**
 	 * Bootstrap
 	 */
 	public static function bootstrap() {
