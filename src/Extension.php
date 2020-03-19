@@ -3,7 +3,7 @@
  * Extension.
  *
  * @author    Pronamic <info@pronamic.eu>
- * @copyright 2005-2019 Pronamic
+ * @copyright 2005-2020 Pronamic
  * @license   GPL-3.0-or-later
  * @package   Pronamic\WordPress\Pay\Extensions\WPeCommerce
  */
@@ -18,14 +18,14 @@ use Pronamic\WordPress\Pay\Plugin;
 /**
  * Title: WP eCommerce extension
  * Description:
- * Copyright: 2005-2019 Pronamic
+ * Copyright: 2005-2020 Pronamic
  * Company: Pronamic
  *
  * @author  Remco Tolsma
  * @version 2.0.4
  * @since   1.0.0
  */
-class Extension {
+class Extension extends \Pronamic\WordPress\Pay\AbstractPluginIntegration {
 	/**
 	 * Slug
 	 *
@@ -39,6 +39,17 @@ class Extension {
 	 * @var string
 	 */
 	const OPTION_PRONAMIC_PAYMENT_METHOD = 'pronamic_pay_pronamic_wpsc_payment_method';
+
+	/**
+	 * Construct WP eCommerce extension.
+	 *
+	 * @param array $args Arguments.
+	 */
+	public function __construct( $args = array() ) {
+		parent::__construct( $args );
+
+		self::bootstrap();
+	}
 
 	/**
 	 * Bootstrap

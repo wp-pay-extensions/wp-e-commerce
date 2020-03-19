@@ -7,6 +7,9 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## [Unreleased][unreleased]
 -
 
+## [2.1.0] - 2020-03-19
+- Extend `Extension` class from `AbstractPluginIntegration`.
+
 ## [2.0.4] - 2019-12-22
 - Improved error handling with exceptions.
 - Updated payment status class name.
@@ -47,7 +50,8 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ### Added
 - First release.
 
-[unreleased]: https://github.com/wp-pay-extensions/wp-e-commerce/compare/2.0.4...HEAD
+[unreleased]: https://github.com/wp-pay-extensions/wp-e-commerce/compare/2.1.0...HEAD
+[2.1.0]: https://github.com/wp-pay-extensions/wp-e-commerce/compare/2.0.4...2.1.0
 [2.0.4]: https://github.com/wp-pay-extensions/wp-e-commerce/compare/2.0.2...2.0.4
 [2.0.3]: https://github.com/wp-pay-extensions/wp-e-commerce/compare/2.0.2...2.0.3
 [2.0.2]: https://github.com/wp-pay-extensions/wp-e-commerce/compare/2.0.1...2.0.2
