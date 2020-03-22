@@ -10,6 +10,7 @@
 
 namespace Pronamic\WordPress\Pay\Extensions\WPeCommerce;
 
+use Pronamic\WordPress\Pay\AbstractPluginIntegration;
 use Pronamic\WordPress\Pay\Payments\PaymentStatus;
 use Pronamic\WordPress\Pay\Extensions\WPeCommerce\Gateways\Gateway;
 use Pronamic\WordPress\Pay\Payments\Payment;
@@ -22,10 +23,10 @@ use Pronamic\WordPress\Pay\Plugin;
  * Company: Pronamic
  *
  * @author  Remco Tolsma
- * @version 2.0.4
+ * @version 2.1.1
  * @since   1.0.0
  */
-class Extension extends \Pronamic\WordPress\Pay\AbstractPluginIntegration {
+class Extension extends AbstractPluginIntegration {
 	/**
 	 * Slug
 	 *
@@ -41,34 +42,41 @@ class Extension extends \Pronamic\WordPress\Pay\AbstractPluginIntegration {
 	const OPTION_PRONAMIC_PAYMENT_METHOD = 'pronamic_pay_pronamic_wpsc_payment_method';
 
 	/**
-	 * Construct WP eCommerce extension.
-	 *
-	 * @param array $args Arguments.
+	 * Construct Ninja Forms plugin integration.
 	 */
-	public function __construct( $args = array() ) {
-		parent::__construct( $args );
+	public function __construct() {
+		parent::__construct();
 
-		self::bootstrap();
+		// Dependencies.
+		$dependencies = $this->get_dependencies();
+
+		$dependencies->add( new WPeCommerceDependency() );
 	}
 
 	/**
-	 * Bootstrap
+	 * Setup.
 	 */
-	public static function bootstrap() {
+	public function setup() {
+		\add_filter( 'pronamic_payment_source_description_' . self::SLUG, array( $this, 'source_description' ), 10, 2 );
+
+		// Check if dependencies are met and integration is active.
+		if ( ! $this->is_active() ) {
+			return;
+		}
+
 		// Add gateways.
-		add_filter( 'wpsc_merchants_modules', array( __CLASS__, 'merchants_modules' ) );
+		\add_filter( 'wpsc_merchants_modules', array( $this, 'merchants_modules' ) );
 
 		// Save gateway options.
-		add_action( 'wpsc_submit_gateway_options', array( __CLASS__, 'submit_gateway_options' ) );
+		\add_action( 'wpsc_submit_gateway_options', array( $this, 'submit_gateway_options' ) );
 
 		// Update payment status.
-		add_action( 'pronamic_payment_status_update_' . self::SLUG, array( __CLASS__, 'status_update' ), 10, 2 );
+		\add_action( 'pronamic_payment_status_update_' . self::SLUG, array( $this, 'status_update' ), 10, 2 );
 
 		// Filters.
-		add_filter( 'pronamic_payment_redirect_url_' . self::SLUG, array( __CLASS__, 'redirect_url' ), 10, 2 );
-		add_filter( 'pronamic_payment_source_text_' . self::SLUG, array( __CLASS__, 'source_text' ), 10, 2 );
-		add_filter( 'pronamic_payment_source_description_' . self::SLUG, array( __CLASS__, 'source_description' ), 10, 2 );
-		add_filter( 'pronamic_payment_source_url_' . self::SLUG, array( __CLASS__, 'source_url' ), 10, 2 );
+		\add_filter( 'pronamic_payment_redirect_url_' . self::SLUG, array( $this, 'redirect_url' ), 10, 2 );
+		\add_filter( 'pronamic_payment_source_text_' . self::SLUG, array( $this, 'source_text' ), 10, 2 );
+		\add_filter( 'pronamic_payment_source_url_' . self::SLUG, array( $this, 'source_url' ), 10, 2 );
 	}
 
 	/**
@@ -78,7 +86,7 @@ class Extension extends \Pronamic\WordPress\Pay\AbstractPluginIntegration {
 	 *
 	 * @return array
 	 */
-	public static function merchants_modules( $gateways = array() ) {
+	public function merchants_modules( $gateways = array() ) {
 		global $nzshpcrt_gateways, $num, $wpsc_gateways, $gateway_checkout_form_fields;
 
 		$classes = array(
@@ -174,7 +182,7 @@ class Extension extends \Pronamic\WordPress\Pay\AbstractPluginIntegration {
 	/**
 	 * Process gateway options submit.
 	 */
-	public static function submit_gateway_options() {
+	public function submit_gateway_options() {
 		// Get gateways.
 		$gateways = self::merchants_modules();
 
@@ -194,7 +202,7 @@ class Extension extends \Pronamic\WordPress\Pay\AbstractPluginIntegration {
 	 * @param Payment $payment      Payment.
 	 * @param bool    $can_redirect Whether or not to redirect.
 	 */
-	public static function status_update( Payment $payment, $can_redirect = false ) {
+	public function status_update( Payment $payment, $can_redirect = false ) {
 		$merchant = new Gateway( $payment->get_source_id() );
 
 		switch ( $payment->status ) {
@@ -202,11 +210,6 @@ class Extension extends \Pronamic\WordPress\Pay\AbstractPluginIntegration {
 				$merchant->set_purchase_processed_by_purchid( WPeCommerce::PURCHASE_STATUS_INCOMPLETE_SALE );
 
 				break;
-
-			case PaymentStatus::EXPIRED:
-			case PaymentStatus::FAILURE:
-				break;
-
 			case PaymentStatus::SUCCESS:
 				/*
 				 * Transactions results
@@ -220,7 +223,8 @@ class Extension extends \Pronamic\WordPress\Pay\AbstractPluginIntegration {
 				$merchant->set_purchase_processed_by_purchid( WPeCommerce::PURCHASE_STATUS_ACCEPTED_PAYMENT );
 
 				break;
-
+			case PaymentStatus::EXPIRED:
+			case PaymentStatus::FAILURE:
 			case PaymentStatus::OPEN:
 			default:
 				break;
@@ -235,7 +239,7 @@ class Extension extends \Pronamic\WordPress\Pay\AbstractPluginIntegration {
 	 *
 	 * @return string
 	 */
-	public static function redirect_url( $url, Payment $payment ) {
+	public function redirect_url( $url, Payment $payment ) {
 		// URL arguments.
 		$args = array(
 			'sessionid' => $payment->get_meta( 'wpsc_session_id' ),
@@ -290,7 +294,7 @@ class Extension extends \Pronamic\WordPress\Pay\AbstractPluginIntegration {
 	 *
 	 * @return string
 	 */
-	public static function source_text( $text, Payment $payment ) {
+	public function source_text( $text, Payment $payment ) {
 		$text = __( 'WP e-Commerce', 'pronamic_ideal' ) . '<br />';
 
 		$text .= sprintf(
@@ -317,7 +321,7 @@ class Extension extends \Pronamic\WordPress\Pay\AbstractPluginIntegration {
 	 *
 	 * @return string
 	 */
-	public static function source_description( $description, Payment $payment ) {
+	public function source_description( $description, Payment $payment ) {
 		return __( 'WP e-Commerce Purchase', 'pronamic_ideal' );
 	}
 
@@ -329,7 +333,7 @@ class Extension extends \Pronamic\WordPress\Pay\AbstractPluginIntegration {
 	 *
 	 * @return string
 	 */
-	public static function source_url( $url, Payment $payment ) {
+	public function source_url( $url, Payment $payment ) {
 		$url = add_query_arg(
 			array(
 				'page' => 'wpsc-purchase-logs',
