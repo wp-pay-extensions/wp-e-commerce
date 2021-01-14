@@ -186,7 +186,7 @@ class Gateway extends wpsc_merchant {
 		$payment->config_id   = $config_id;
 		$payment->order_id    = $this->purchase_id;
 		$payment->description = sprintf(
-			/* translators: %s: purchase id */
+			/* translators: %s: order number */
 			__( 'Order %s', 'pronamic_ideal' ),
 			$this->purchase_id
 		);
