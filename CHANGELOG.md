@@ -27,7 +27,7 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 - Updated packages.
 
 ## [2.0.2] - 2019-03-29
-- Added support for additional payment data like customer, adresses, payment lines, etc.
+- Added support for additional payment data like customer, addresses, payment lines, etc.
 - Added gateway for AfterPay, Bancontact, Bank Transfer, Credit Card, Focum, Giropay, Maestro, PayPal and SOFORT.
 
 ## [2.0.1] - 2018-12-12
@@ -51,7 +51,7 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## [1.0.1] - 2016-02-12
 - WordPress Coding Standards optimizations.
 - Removed status code from redirect in status_update.
-- Added Pronamic gateway, whith payment method selector in plugin settings.
+- Added Pronamic gateway, with payment method selector in plugin settings.
 - iDEAL gateway now uses the iDEAL payment method.
 
 ## 1.0.0 - 2015-05-26
