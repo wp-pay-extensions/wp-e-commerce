@@ -7,6 +7,9 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## [Unreleased][unreleased]
 -
 
+## [2.1.3] - 2021-04-26
+- Happy 2021.
+
 ## [2.1.2] - 2021-01-14
 - Fix i18n "Warning: The string "..." has X different translator comments".
 - Remove Travis hhvm test.
@@ -27,7 +30,7 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 - Updated packages.
 
 ## [2.0.2] - 2019-03-29
-- Added support for additional payment data like customer, adresses, payment lines, etc.
+- Added support for additional payment data like customer, addresses, payment lines, etc.
 - Added gateway for AfterPay, Bancontact, Bank Transfer, Credit Card, Focum, Giropay, Maestro, PayPal and SOFORT.
 
 ## [2.0.1] - 2018-12-12
@@ -51,7 +54,7 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## [1.0.1] - 2016-02-12
 - WordPress Coding Standards optimizations.
 - Removed status code from redirect in status_update.
-- Added Pronamic gateway, whith payment method selector in plugin settings.
+- Added Pronamic gateway, with payment method selector in plugin settings.
 - iDEAL gateway now uses the iDEAL payment method.
 
 ## 1.0.0 - 2015-05-26
@@ -59,7 +62,8 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ### Added
 - First release.
 
-[unreleased]: https://github.com/wp-pay-extensions/wp-e-commerce/compare/2.1.2...HEAD
+[unreleased]: https://github.com/wp-pay-extensions/wp-e-commerce/compare/2.1.3...HEAD
+[2.1.3]: https://github.com/wp-pay-extensions/wp-e-commerce/compare/2.1.2...2.1.3
 [2.1.2]: https://github.com/wp-pay-extensions/wp-e-commerce/compare/2.1.1...2.1.2
 [2.1.1]: https://github.com/wp-pay-extensions/wp-e-commerce/compare/2.1.0...2.1.1
 [2.1.0]: https://github.com/wp-pay-extensions/wp-e-commerce/compare/2.0.4...2.1.0
