@@ -7,6 +7,9 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## [Unreleased][unreleased]
 -
 
+## [2.1.3] - 2021-04-26
+- Happy 2021.
+
 ## [2.1.2] - 2021-01-14
 - Fix i18n "Warning: The string "..." has X different translator comments".
 - Remove Travis hhvm test.
@@ -59,7 +62,8 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ### Added
 - First release.
 
-[unreleased]: https://github.com/wp-pay-extensions/wp-e-commerce/compare/2.1.2...HEAD
+[unreleased]: https://github.com/wp-pay-extensions/wp-e-commerce/compare/2.1.3...HEAD
+[2.1.3]: https://github.com/wp-pay-extensions/wp-e-commerce/compare/2.1.2...2.1.3
 [2.1.2]: https://github.com/wp-pay-extensions/wp-e-commerce/compare/2.1.1...2.1.2
 [2.1.1]: https://github.com/wp-pay-extensions/wp-e-commerce/compare/2.1.0...2.1.1
 [2.1.0]: https://github.com/wp-pay-extensions/wp-e-commerce/compare/2.0.4...2.1.0
