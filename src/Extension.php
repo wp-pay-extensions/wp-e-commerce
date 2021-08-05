@@ -150,6 +150,11 @@ class Extension extends AbstractPluginIntegration {
 				'display_name' => __( 'SOFORT', 'pronamic_ideal' ),
 				'internalname' => 'wpsc_merchant_pronamic_sofort',
 			),
+			'SprayPayGateway'     => array(
+				'name'         => __( 'Pronamic - SprayPay', 'pronamic_ideal' ),
+				'display_name' => __( 'SprayPay', 'pronamic_ideal' ),
+				'internalname' => 'wpsc_merchant_pronamic_spraypay',
+			),
 		);
 
 		foreach ( $classes as $class => $args ) {
