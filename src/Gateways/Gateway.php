@@ -192,7 +192,7 @@ class Gateway extends wpsc_merchant {
 			$payment->email = $this->cart_data['email_address'];
 		}
 
-		$payment->method = $payment_method;
+		$payment->set_payment_method( $payment_method );
 
 		$payment->set_description( \sprintf(
 			/* translators: %s: order number */
