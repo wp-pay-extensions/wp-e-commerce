@@ -25,5 +25,5 @@ class AfterPayGateway extends Gateway {
 	 *
 	 * @var string $payment_method
 	 */
-	const PAYMENT_METHOD = PaymentMethods::AFTERPAY;
+	const PAYMENT_METHOD = PaymentMethods::AFTERPAY_NL;
 }
