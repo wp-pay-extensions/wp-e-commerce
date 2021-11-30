@@ -114,6 +114,11 @@ class Extension extends AbstractPluginIntegration {
 				'display_name' => __( 'Bank Transfer', 'pronamic_ideal' ),
 				'internalname' => 'wpsc_merchant_pronamic_bank_transfer',
 			),
+			'BlikGateway' => array(
+				'name'         => __( 'Pronamic - BLIK', 'pronamic_ideal' ),
+				'display_name' => __( 'BLIK', 'pronamic_ideal' ),
+				'internalname' => 'wpsc_merchant_pronamic_blik',
+			),
 			'CreditCardGateway'   => array(
 				'name'         => __( 'Pronamic - Credit Card', 'pronamic_ideal' ),
 				'display_name' => __( 'Credit Card', 'pronamic_ideal' ),
@@ -139,6 +144,11 @@ class Extension extends AbstractPluginIntegration {
 				'name'         => __( 'Pronamic - Maestro', 'pronamic_ideal' ),
 				'display_name' => __( 'Maestro', 'pronamic_ideal' ),
 				'internalname' => 'wpsc_merchant_pronamic_maestro',
+			),
+			'MbWayGateway'      => array(
+				'name'         => __( 'Pronamic - MB WAY', 'pronamic_ideal' ),
+				'display_name' => __( 'MB WAY', 'pronamic_ideal' ),
+				'internalname' => 'wpsc_merchant_pronamic_mb_way',
 			),
 			'PayPalGateway'       => array(
 				'name'         => __( 'Pronamic - PayPal', 'pronamic_ideal' ),
