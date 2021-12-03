@@ -183,8 +183,8 @@ class Gateway extends wpsc_merchant {
 			)
 		);
 
-		$payment->config_id   = $config_id;
-		$payment->order_id    = $this->purchase_id;
+		$payment->config_id = $config_id;
+		$payment->order_id  = $this->purchase_id;
 		$payment->source    = 'wp-e-commerce';
 		$payment->source_id = $this->purchase_id;
 
@@ -194,11 +194,13 @@ class Gateway extends wpsc_merchant {
 
 		$payment->set_payment_method( $payment_method );
 
-		$payment->set_description( \sprintf(
-			/* translators: %s: order number */
-			__( 'Order %s', 'pronamic_ideal' ),
-			$this->purchase_id
-		) );
+		$payment->set_description(
+			\sprintf(
+				/* translators: %s: order number */
+				__( 'Order %s', 'pronamic_ideal' ),
+				$this->purchase_id
+			)
+		);
 
 		// Set total amount.
 		$payment->set_total_amount(
