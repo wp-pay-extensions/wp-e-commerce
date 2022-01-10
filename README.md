@@ -1,4 +1,4 @@
-# WordPress Pay Extension: WP eCommerce
+# [DEPRECATED] WordPress Pay Extension: WP eCommerce
 
 **WP eCommerce driver for the WordPress payment processing library.**
 
